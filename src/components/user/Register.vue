@@ -24,7 +24,7 @@
 
 <script>
   export default {
-    name: "Register",
+    name: "UserRegister",
     data(){
       return{
         registerForm:{

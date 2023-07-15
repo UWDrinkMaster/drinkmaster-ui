@@ -17,7 +17,7 @@
 
 <script>
   export default {
-    name: "Home",
+    name: "UserHome",
     data () {
       return {
         mqttForm: {

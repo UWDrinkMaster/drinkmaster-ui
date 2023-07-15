@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from "../components/Home";
-import Login from "../components/Login";
+import UserHome from "../components/user/Home";
+import UserLogin from "../components/user/Login";
 
 Vue.use(VueRouter)
 
@@ -9,19 +9,16 @@ const routes = [
   {
     path: '/',
     name: 'Default',
-    redirect: '/login',
-    component:  Login,
+    component:  UserLogin,
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: Home,
-  },
-  {
-    path: '/login', name: 'Login', component: () => import('../components/Login')
-  },
-  {
-    path: '/register', name: 'Register', component: () => import('../components/Register')
+    path: '/user',
+    name: 'User',
+    children: [
+      {path: '/home', name: 'UserHome', component: ()=>import('../components/user/Home')},
+      {path: '/login',name:'UserLogin',component:()=>import('../components/user/Login')},
+      {path:'/register',name:'UserRegister',component:()=>import('../components/user/Register')},
+    ]
   },
 ]
 
@@ -47,20 +44,17 @@ export const createRouter =() => new VueRouter({
     {
       path: '/',
       name: 'Default',
-      redirect: '/home',
-      component:  Home,
+      redirect: '/user/login',
+      component:  UserLogin,
     },
     {
-      path: '/login', name: 'Login', component: () => import('@/components/Login.vue')
-    },
-    {
-      path: '/register', name: 'Register', component: () => import('@/components/Register.vue')
-    },
-    {
-      path: '/home',
-      name: 'Home',
-      component: Home,
-
+      path: '/user',
+      name: 'User',
+      children: [
+        {path: '/home', name: 'UserHome', component: ()=>import('../components/user/Home')},
+        {path: '/login',name:'UserLogin',component:()=>import('../components/user/Login')},
+        {path:'/register',name:'UserRegister',component:()=>import('../components/user/Register')},
+      ]
     },
   ]
 })
