@@ -25,7 +25,7 @@
 <script>
   import TopBar from "../user/common/TopBar";
   import Menu from "../user/order/Menu";
-  import Recommand from "../user/order/Recommand";
+  import Recommand from "./order/Recommend";
   export default {
     name: "UserHome",
     components: {TopBar, Menu, Recommand},
