@@ -1,0 +1,17 @@
+.el-button{
+    background-color: rgba(253,213,79,0.98) !important;
+
+}
+.text{
+    font: 600 16px "Manrope", sans-serif;
+
+}
+span {
+    font: 200 12px "Manrope", sans-serif;
+}
+.el-menu-item{
+    font: 200 10px "Manrope", sans-serif;
+}
+.el-form-item{
+font: 200 10px "Manrope", sans-serif;
+}

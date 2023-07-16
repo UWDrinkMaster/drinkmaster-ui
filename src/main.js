@@ -7,7 +7,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import locale from 'element-ui/lib/locale/lang/en'
 
-axios.defaults.baseURL = 'http://localhost:8498/mqtt'
+axios.defaults.baseURL = 'http://localhost:8498/'
 
 // axios.defaults.withCredentials = true
 Vue.prototype.$axios = axios

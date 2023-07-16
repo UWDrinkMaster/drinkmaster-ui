@@ -1,7 +1,7 @@
 <template>
   <body id="poster" v-loading="loading">
   <el-form class="container-login" label-position="left" label-width="0px" :rules="rules" :model="loginForm" ref="ruleForm">
-    <h3 class="title-login">Login</h3>
+    <h3 class="title-login">Drink Master</h3>
     <el-form-item prop="username">
       <el-input v-model="loginForm.username" placeholder="username" prefix-icon="el-icon-user"></el-input>
     </el-form-item>
@@ -9,11 +9,11 @@
       <el-input v-model="loginForm.password" placeholder="password" show-password prefix-icon="el-icon-lock"></el-input>
     </el-form-item>
     <!--<el-checkbox class="login_remember" v-model="checked"><span style="color: #505458">remember</span></el-checkbox>-->
-    <router-link to="/home" class="testEntry">Test Entry</router-link>
+    <router-link to="/user/home" class="testEntry">Test Entry</router-link>
     <br>
     <el-form-item style="width: 100%">
-      <router-link to="/register"><el-button type="info" class="btn-login" style="float: left">Register</el-button></router-link>
-      <el-button type="primary" class="btn-login" @click="login" style="float: right">Login</el-button>
+      <router-link to="/register"><el-button type="info" class="btn-login" style="float: left; background-color: rgba(253,213,79,0.98) ">Register</el-button></router-link>
+      <el-button type="primary" class="btn-login" @click="login" style="float: right; background-color: rgba(253,213,79,0.98)  ">Login</el-button>
     </el-form-item>
   </el-form>
   </body>
@@ -76,7 +76,7 @@
   }
   .container-login {
     border-radius: 15px;
-    width: 350px;
+    width: 260px;
     background-color: #fff;
     padding: 35px 35px 15px 35px;
     margin: 180px auto;
