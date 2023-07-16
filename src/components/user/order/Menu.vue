@@ -18,7 +18,7 @@
 
               <!--<el-button type="text" size="mini" class="button" style="float: left" @click="dialogFormVisible = true" round="true">Customize</el-button>-->
 
-              <el-button  size="mini" class="button"  @click="drinkOrderPendingStep1 = true" round="true">Order</el-button>
+              <el-button  size="mini" class="button"  @click="drinkOrderPendingStep1 = true" round>Order</el-button>
             </div>
           </div>
         </el-card>
@@ -29,7 +29,6 @@
       title="Order Confirm"
       :visible.sync="drinkOrderPendingStep1"
       width="80%"
-      show-close=false
       center>
       <span>Your drink is ready to be mixed.
 Please confirm you put your bottle on the machine  </span>
@@ -43,7 +42,6 @@ Please confirm you put your bottle on the machine  </span>
       title="Your Drink is mixing!"
       :visible.sync="drinkOrderPendingStep2"
       width="80%"
-      show-close=false
       center>
       <span>
               Mixing... </span>
@@ -57,7 +55,6 @@ Please confirm you put your bottle on the machine  </span>
       title="Your Drink is ready!"
       :visible.sync="drinkOrderPendingStep3"
       width="80%"
-      show-close=false
       center>
       <span>
               Please click on the confirm button, after you take your drink! </span>

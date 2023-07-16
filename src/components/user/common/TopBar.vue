@@ -16,7 +16,17 @@
 
 <script>
   export default {
-    name: "TopBar"
+    name: "TopBar",
+    data() {
+      return {
+        activeIndex: '1'
+      };
+    },
+    methods: {
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
+      }
+    }
   }
 </script>
 <style>
