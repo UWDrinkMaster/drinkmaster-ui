@@ -125,7 +125,7 @@ Please confirm you put your bottle on the machine  </span>
         const Ingredient3 = parseInt(this.form.ingredientC)
         const Ingredient4 = parseInt(this.form.ingredientD)
 
-        const pourContent = { Ingredient1, Ingredient2, Ingredient3,Ingredient4 };
+        const pourContent = [{Ingredient1}, {Ingredient2}, {Ingredient3},{Ingredient4} ];
         mqttPour('1','13','123',pourContent)
         this.drinkOrderPendingStep1 = false;
 
