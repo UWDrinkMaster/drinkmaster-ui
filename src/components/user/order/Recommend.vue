@@ -33,7 +33,7 @@
       <span>Your drink is ready to be mixed.
 Please confirm you put your bottle on the machine  </span>
       <span slot="footer" class="dialog-footer">
-            <el-button  type="primary" @click="drinkOrderPendingStep1 = false">No, I haven't.</el-button>
+            <el-button  type="primary" @click="drinkOrderPendingStep1 = false" style="float:left">No, I haven't.</el-button>
     <el-button type="primary" @click="handleConfirmation">Yes, I put!</el-button>
   </span>
     </el-dialog>
@@ -170,11 +170,7 @@ Please confirm you put your bottle on the machine  </span>
   }
 
   .button {
-    padding: 0;
     float: right;
-  .text{
-    color: black;
-  }
   }
 
   .image {
@@ -190,5 +186,11 @@ Please confirm you put your bottle on the machine  </span>
 
   .clearfix:after {
     clear: both
+  }
+  .dialog-footer{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-evenly;
   }
 </style>

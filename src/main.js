@@ -15,6 +15,38 @@ Vue.prototype.$axios = axios
 Vue.config.productionTip = false
 Vue.use(ElementUI,{locale})
 /* eslint-disable no-new */
+
+router.beforeEach(((to, from, next) => {
+  // if(store.getters.getUser && to.path.startsWith('/admin')){
+  //   initAdminMenu(router,store)
+  //   next()
+  // }
+
+  // if(store.getters.getUser && to.path.startsWith('/login')){
+  //   next({
+  //     path:'/admin/dashboard'
+  //   })
+  // }
+
+  if(to.meta.requireAuth){
+    if(store.getters.getUser){
+      // axios.get('/authentication').then(res=>{
+      //   if(res){
+          next()
+      //   }
+      // })
+    }else{
+      next({
+        path:'/user/login',
+        query:{redirect:to.fullPath}
+      })
+    }
+  }else{
+    next()
+  }
+
+}))
+
 new Vue({
   router,
   store,

@@ -99,7 +99,7 @@ Please confirm you put your bottle on the machine  </span>
   import '../../../utils/mqtt.js';
   import {mqttPour} from "../../../utils/mqtt";
   export default {
-    name: "Menu",
+    name: "PopularDrinks",
     data() {
       return {
         machineId: 1,
@@ -193,14 +193,6 @@ Please confirm you put your bottle on the machine  </span>
     border-radius: 4px;
     min-height: 36px;
   }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
-  }
-  .time {
-    font-size: 13px;
-    color: #999;
-  }
 
   .bottom {
     margin-top: 13px;
@@ -208,11 +200,7 @@ Please confirm you put your bottle on the machine  </span>
   }
 
   .button {
-    padding: 0;
     float: right;
-    .text{
-      color: black;
-    }
   }
 
   .image {
