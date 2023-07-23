@@ -15,12 +15,7 @@ const routes = [
   {path: '/user/home', name: 'UserHome', component: ()=>import('../components/user/Home')},
   {path: '/user/login',name:'UserLogin',component:()=>import('../components/user/Login')},
   {path:'/user/register',name:'UserRegister',component:()=>import('../components/user/Register')},
-
-
 ]
-
-
-
 
 const router = new VueRouter({
   mode:'history',

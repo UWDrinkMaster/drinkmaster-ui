@@ -18,7 +18,7 @@
 
               <!--<el-button type="text" size="mini" class="button" style="float: left" @click="dialogFormVisible = true" round="true">Customize</el-button>-->
 
-              <el-button  size="mini" class="button"  @click="drinkOrderPendingStep1 = true" round>Order</el-button>
+              <el-button  size="mini" class="button"  @click="orderDrink" round>Order</el-button>
             </div>
           </div>
         </el-card>
@@ -64,7 +64,7 @@ Please confirm you put your bottle on the machine  </span>
     </el-dialog>
 
 
-    <el-dialog       width="80%"
+    <el-dialog width="80%"
                      title="Drink Details" :visible.sync="dialogFormVisible">
       <el-form :model="form">
 
@@ -102,6 +102,8 @@ Please confirm you put your bottle on the machine  </span>
     name: "Menu",
     data() {
       return {
+        machineId: 1,
+        transId: -1,
         drinkOrderPendingStep1: false,
         drinkOrderPendingStep2: false,
         drinkOrderPendingStep3: false,
@@ -124,9 +126,12 @@ Please confirm you put your bottle on the machine  </span>
         const Ingredient2 = parseInt(this.form.ingredientB)
         const Ingredient3 = parseInt(this.form.ingredientC)
         const Ingredient4 = parseInt(this.form.ingredientD)
+        const transId = parseInt(this.transId)
+        const machineId = parseInt(this.machineId)
+
 
         const pourContent = [{Ingredient1}, {Ingredient2}, {Ingredient3},{Ingredient4} ];
-        mqttPour('1','13','123',pourContent)
+        mqttPour('1',machineId,transId,pourContent)
         this.drinkOrderPendingStep1 = false;
 
         this.openNewDialog();
@@ -141,6 +146,27 @@ Please confirm you put your bottle on the machine  </span>
       openDrinkDetail(){
         this.dialogFormVisible = true;
       },
+      orderDrink(){
+
+        let userId = -1;
+        if(this.$store.getters.getUser){
+          userId = this.$store.getters.getUser.id
+        }
+        this.$axios.post('/order/create',{
+          drinkId: 2,
+          machineId: this.machineId,
+          quantity: 1,
+          userId: userId,
+        }).then(res=>{
+          if(res.status===201){
+            this.transId = res.data.id
+            this.drinkOrderPendingStep1 = true;
+          }
+        }).catch(err=>{
+          console.log(err.response)
+          this.$message.error(err.response.data.message)
+        })
+      }
 
     }
   }

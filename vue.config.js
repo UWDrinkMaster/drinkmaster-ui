@@ -22,7 +22,8 @@ module.exports = {
         minRatio: 0.8,
         deleteOriginalAssets:false,
       })
-    ]
+    ],
+    devtool:'source-map'
   },
 
   devServer:{

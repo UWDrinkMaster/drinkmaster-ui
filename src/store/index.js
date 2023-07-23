@@ -5,14 +5,14 @@ Vue.use(Vuex)
 
  const store = new Vuex.Store({
   state: {
-    username:window.localStorage.getItem('username') == null ? '' : JSON.parse(window.localStorage.getItem('username' || '[]')),
+    userinfo:window.localStorage.getItem('userinfo') == null ? '' : JSON.parse(window.localStorage.getItem('userinfo' || '[]')),
     categories:window.sessionStorage.getItem('categories') == null ? [{id: 0, name: "All"},{id: 1, name: "Literature"},{id: 2, name: "Movie"},{id: 3, name: "Culture"},{id: 4, name: "Life"},{id: 5, name: "Sports"},{id: 6, name: "Technology"}] : JSON.parse(window.sessionStorage.getItem('categories' || '[]')),
     initSideIndex:window.sessionStorage.getItem('index') == null ? '0' : JSON.parse(window.sessionStorage.getItem('index' || '[]')),
     adminMenus:[]
   },
   getters:{
     getUser(){
-      return store.state.username
+      return store.state.userinfo
     },
     getCategories(){
       return store.state.categories
@@ -26,13 +26,13 @@ Vue.use(Vuex)
 
   },
   mutations: {
-    LOGIN(state,username){
-      state.username = username
-      window.localStorage.setItem('username',JSON.stringify(username))
+    LOGIN(state,userinfo){
+      state.userinfo = userinfo
+      window.localStorage.setItem('userinfo',JSON.stringify(userinfo))
     },
     LOGOUT(state){
-      state.username =''
-      window.localStorage.removeItem('username')
+      state.userinfo =''
+      window.localStorage.removeItem('userinfo')
       state.adminMenus = []
     },
     SET_CATEGORIES(state,val){

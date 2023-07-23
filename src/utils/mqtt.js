@@ -1,5 +1,5 @@
-import axios from "axios"
-
+import $axios from './$axios'
+// import axios from 'axios'
 export function mqttPour (id, machineId, transId, content) {
   const currentTimestamp = new Date().getTime();
   const obj = { 1: 1, 2: 3, 3: 1, 4:3 };
@@ -8,7 +8,7 @@ export function mqttPour (id, machineId, transId, content) {
   const jsonStringContent = new URLSearchParams(jsonString).toString();
   const finalContent = jsonStringContent.slice(0, -1);
   console.log(jsonStringContent);
-  axios
+  $axios
     .get(`mqtt/pour?id=${id}&machineId=${machineId}&transId=${transId}&time=${currentTimestamp}&content=${finalContent}`)
     .then(successResponse => {
       if (successResponse.data.code === 200) {

@@ -2,8 +2,8 @@
   <body id="poster" v-loading="loading">
   <el-form class="container-login" label-position="left" label-width="0px" :rules="rules" :model="loginForm" ref="ruleForm">
     <h3 class="title-login">Drink Master</h3>
-    <el-form-item prop="username">
-      <el-input v-model="loginForm.username" placeholder="username" prefix-icon="el-icon-user"></el-input>
+    <el-form-item prop="email">
+      <el-input v-model="loginForm.email" placeholder="email" prefix-icon="el-icon-user"></el-input>
     </el-form-item>
     <el-form-item prop="password">
       <el-input v-model="loginForm.password" placeholder="password" show-password prefix-icon="el-icon-lock"></el-input>
@@ -12,7 +12,7 @@
     <router-link to="/user/home" class="testEntry">Test Entry</router-link>
     <br>
     <el-form-item style="width: 100%">
-      <router-link to="/register"><el-button type="info" class="btn-login" style="float: left; background-color: rgba(253,213,79,0.98) ">Register</el-button></router-link>
+      <router-link to="/user/register"><el-button type="info" class="btn-login" style="float: left; background-color: rgba(253,213,79,0.98) ">Register</el-button></router-link>
       <el-button type="primary" class="btn-login" @click="login" style="float: right; background-color: rgba(253,213,79,0.98)  ">Login</el-button>
     </el-form-item>
   </el-form>
@@ -25,11 +25,11 @@
     data(){
       return{
         loginForm:{
-          username:'',
+          email:'',
           password:''
         },
         rules:{
-          username:[{required:true,message:'Username can\'t be empty',trigger:'blur'}],
+          email:[{required:true,message:'Email can\'t be empty',trigger:'blur'}],
           password:[{required:true,message:'Password can\'t be empty',trigger:'blur'}]
         },
         loading:false,
@@ -41,14 +41,14 @@
         this.$refs.ruleForm.validate((valid)=>{
           if(valid){
             let _this = this
-            this.$axios.post('/login',{
-              username:this.loginForm.username,
+            this.$axios.post('/user/login',{
+              email:this.loginForm.email,
               password:this.loginForm.password
             }).then(res=>{
               if(res.status===200){
                 _this.$store.commit('LOGIN',res.data)
                 let path  = this.$route.query.redirect;
-                _this.$router.replace({path: path === '/' || path === undefined ? '/admin/dashboard' : path}).catch(()=>{})
+                _this.$router.replace({path: path === '/' || path === undefined ? '/user/home' : path}).catch(()=>{})
               }
             }).catch(err=>{
               console.log(err.response)
