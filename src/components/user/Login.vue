@@ -9,7 +9,7 @@
       <el-input v-model="loginForm.password" placeholder="password" show-password prefix-icon="el-icon-lock"></el-input>
     </el-form-item>
     <!--<el-checkbox class="login_remember" v-model="checked"><span style="color: #505458">remember</span></el-checkbox>-->
-    <router-link to="/user/home" class="testEntry">Test Entry</router-link>
+<!--    <router-link to="/user/home" class="testEntry">Test Entry</router-link>-->
     <br>
     <el-form-item style="width: 100%">
       <router-link to="/user/register"><el-button type="info" class="btn-login" style="float: left; background-color: rgba(253,213,79,0.98) ">Register</el-button></router-link>
