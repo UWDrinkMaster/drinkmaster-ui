@@ -2,18 +2,19 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
-import axios from "axios"
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import locale from 'element-ui/lib/locale/lang/en'
+import {mqttApi} from "@/api/mqtt";
+import {orderApi} from "@/api/order";
+import {userApi} from "@/api/user";
 
-axios.defaults.baseURL = 'http://localhost:8498'
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-axios.defaults.withCredentials = false
-
-Vue.prototype.$axios = axios
+Vue.prototype.$mqttApi = mqttApi;
+Vue.prototype.$orderApi = orderApi;
+Vue.prototype.$userApi = userApi;
 Vue.config.productionTip = false
 Vue.use(ElementUI,{locale})
+
 /* eslint-disable no-new */
 
 router.beforeEach(((to, from, next) => {

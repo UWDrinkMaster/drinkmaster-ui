@@ -1,17 +1,17 @@
 <template>
   <div>
     <PopularDrinks></PopularDrinks>
-    <Recommand></Recommand>
+    <Recommend></Recommend>
   </div>
 </template>
 
 <script>
-  import PopularDrinks from "./order/PopularDrinks";
-  import Recommand from "./order/Recommend";
+  import PopularDrinks from "@/components/user/order/PopularDrinks";
+  import Recommend from "@/components/user/order/Recommend";
 
   export default {
     name: "Menu",
-    components: {PopularDrinks, Recommand},
+    components: {PopularDrinks, Recommend},
     data () {
       return {
         mqttForm: {
@@ -24,17 +24,6 @@
       }
     },
     methods: {
-      mqttPour () {
-        this.$axios
-          .get(`/pour?id=${this.mqttForm.id}&machineId=${this.mqttForm.machineId}&transId=${this.mqttForm.transId}&time=${this.mqttForm.time}&content=${this.mqttForm.content}`)
-          .then(successResponse => {
-            if (successResponse.data.code === 200) {
-              // this.$router.replace({path: '/index'})
-            }
-          })
-          .catch(failResponse => {
-          })
-      }
     }
   }
 </script>

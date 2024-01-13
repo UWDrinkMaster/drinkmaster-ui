@@ -95,7 +95,8 @@ Please confirm you put your bottle on the machine  </span>
 </template>
 
 <script>
-  import '../../../assets/css/main.css';
+  import '@/assets/css/main.css';
+
   export default {
     name: "Recommended",
     data() {

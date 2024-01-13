@@ -95,9 +95,8 @@ Please confirm you put your bottle on the machine  </span>
 </template>
 
 <script>
-  import '../../../assets/css/main.css';
-  import '../../../utils/mqtt.js';
-  import {mqttPour} from "../../../utils/mqtt";
+  import '@/assets/css/main.css';
+
   export default {
     name: "PopularDrinks",
     data() {
@@ -131,7 +130,7 @@ Please confirm you put your bottle on the machine  </span>
 
 
         const pourContent = [{Ingredient1}, {Ingredient2}, {Ingredient3},{Ingredient4} ];
-        mqttPour('1',machineId,transId,pourContent)
+        this.$mqttApi.mqttPour('1',machineId,transId,pourContent)
         this.drinkOrderPendingStep1 = false;
 
         this.openNewDialog();
@@ -152,12 +151,7 @@ Please confirm you put your bottle on the machine  </span>
         if(this.$store.getters.getUser){
           userId = this.$store.getters.getUser.id
         }
-        this.$axios.post('/order/create',{
-          drinkId: 2,
-          machineId: this.machineId,
-          quantity: 1,
-          userId: userId,
-        }).then(res=>{
+        this.$orderApi.createOrder(2, this.machineId, 1, userId).then(res=>{
           if(res.status===201){
             this.transId = res.data.id
             this.drinkOrderPendingStep1 = true;

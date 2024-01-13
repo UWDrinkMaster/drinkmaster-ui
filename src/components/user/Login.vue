@@ -41,10 +41,7 @@
         this.$refs.ruleForm.validate((valid)=>{
           if(valid){
             let _this = this
-            this.$axios.post('/user/login',{
-              email:this.loginForm.email,
-              password:this.loginForm.password
-            }).then(res=>{
+            this.$userApi.login(this.loginForm.email,this.loginForm.password).then(res=>{
               if(res.status===200){
                 _this.$store.commit('LOGIN',res.data)
                 let path  = this.$route.query.redirect;

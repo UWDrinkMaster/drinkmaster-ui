@@ -7,7 +7,8 @@
 
 
 <script>
-  import TopBar from "../user/common/TopBar";
+  import TopBar from "@/components/user/common/TopBar";
+
   export default {
     name: "UserHome", components: {TopBar}
   }
