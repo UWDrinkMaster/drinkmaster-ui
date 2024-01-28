@@ -7,11 +7,12 @@ export const userApi ={
         password
       })
   },
-  register (email,password) {
+  register (email,password, dateOfBirth) {
     return http
       .post('/user/signup',{
         email,
-        password
+        password,
+        dateOfBirth,
       })
   }
 }

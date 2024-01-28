@@ -8,10 +8,13 @@ import locale from 'element-ui/lib/locale/lang/en'
 import {mqttApi} from "@/api/mqtt";
 import {orderApi} from "@/api/order";
 import {userApi} from "@/api/user";
+import {profileApi} from "@/api/profile";
+
 
 Vue.prototype.$mqttApi = mqttApi;
 Vue.prototype.$orderApi = orderApi;
 Vue.prototype.$userApi = userApi;
+Vue.prototype.$profileApi = profileApi;
 Vue.config.productionTip = false
 Vue.use(ElementUI,{locale})
 
