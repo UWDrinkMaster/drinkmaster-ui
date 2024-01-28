@@ -1,11 +1,24 @@
 <template>
   <div>
-
     <div style="width: 100%; height: 100%; position: relative; background: white">
-      <div style="width: 257px; left: 30%; top: 187px; position: absolute; color: #09101D; font-size: 19px; font-weight: 600; line-height: 20px; word-wrap: break-word">Email: {{this.$store.getters.getUser.username}}</div>
-      <img style="width: 116px; height: 111px; left: 37%; top: 60px; position: absolute" src="../../assets/img/user_icon.png" />
 
-      <button style="padding-left: 20px; padding-right: 20px; padding-top: 8px; padding-bottom: 8px; left: 37%; top: 264px; position: absolute; background: linear-gradient(180deg, #F9E8A8 0%, #F4C317 91%); border-radius: 24px; justify-content: flex-start; align-items: center; gap: 8px; display: inline-flex">
+      <img style="width: 116px; height: 111px; display: block; margin-left: auto; margin-right: auto;" src="../../assets/img/user_icon.png" />
+      <ul >
+        <li  >Email: {{this.$store.getters.getUser.username}}</li >
+        <li >Allergy:
+          <el-select v-model="storedAllergyOptions" multiple placeholder="Select your allergy" @blur="saveAllergy()">
+            <el-option
+              v-for="item in defaultAllergyOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id">
+              <span style=" color: #8492a6; font-size: 13px">{{ item.name }}: </span>
+
+              <span style="float: bottom; font-size: 10px">{{ item.description }}</span>
+            </el-option>
+          </el-select></li >
+      </ul>
+      <button style=" background: linear-gradient(180deg, #F9E8A8 0%, #F4C317 91%); border-radius: 24px;display: block; margin-left: auto;margin-right: auto;">
         <div style="color: white; font-size: 18px; font-family: Source Sans Pro; font-weight: 600; line-height: 28px; word-wrap: break-word" @click="logout">Sign Out</div>
       </button>
     </div>
@@ -16,7 +29,16 @@
 <script>
     export default {
       name: "Profile",
+      data(){
+        return {
+          defaultAllergyOptions: [],
+          storedAllergyOptions:[],
+         // updatedAllergyOptions:[],
+        }
+      },
       methods:{
+       // logout(){ console.log(this.defaultAllergyOptions)},
+
         logout() {
           // this.$axios.get('logout').then(res=>{
           //   if(res&&res.status===200){
@@ -29,7 +51,54 @@
           // }).catch(err=>{
           //   console.log(err)
           // })
+        },
+        getDefaultAllergyList(){
+          this.$profileApi.getDefaultAllergyList().then((res)=>{
+            if(res&&res.status ===200){
+              console.log(res.data)
+              this.defaultAllergyOptions = res.data
+            }
+          })
+        },
+        getUserAllergyList(){
+          if(this.$store.getters.getUser.id){
+            this.$profileApi.getUserAllergyList(this.$store.getters.getUser.id).then((res)=>{
+              if(res&&res.status ===200){
+                if(res.data !== null && res.data.length>0){
+                  console.log("pre data")
+                  console.log( res.data)
+                  this.storedAllergyOptions = [...new Set(res.data.map(obj => obj.id))];
+                }
+              }
+            })
+          }
+        },
+        saveAllergy(){
+          console.log("set")
+
+          console.log(this.storedAllergyOptions)
+
+          this.$profileApi.setUserAllergy(this.storedAllergyOptions,this.$store.getters.getUser.id).then(res => {
+            if (res.status === 201) {
+              console.log(res)
+            }
+          }).catch(err => {
+            this.$message.error(err.response.data.message)
+          })
+          console.log(this.storedAllergyOptions)
+        },
+        displayOptions(){
+          if(this.storedAllergyOptions.length===0 ){
+            return this.defaultAllergyOptions
+          }
+          return this.storedAllergyOptions;
         }
+
+
+      },
+      mounted() {
+        this.getDefaultAllergyList();
+        this.getUserAllergyList();
       }
     };
 </script>

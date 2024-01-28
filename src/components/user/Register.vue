@@ -141,7 +141,9 @@
         rules: {
           // username:[{required:true,message:'Username can\'t be empty',trigger:'blur'}],
           password: [{required: true, message: 'Password can\'t be empty', trigger: 'blur'}],
-          email: [{required: true, type: 'email', message: 'Please input the correct email address'}]
+          email: [{required: true, type: 'email', message: 'Please input the correct email address'}],
+          age: [{required: true, message: 'Please scan your id'}]
+
         },
         loading: false
       }
@@ -197,7 +199,7 @@
         this.$refs.form.validate((valid) => {
           if (valid) {
             // this.extractedDate.replace(/\//g, '-');
-            this.$userApi.register(this.registerForm.email, this.registerForm.password).then(res => {
+            this.$userApi.register(this.registerForm.email, this.registerForm.password,this.extractedDate.replace(/\//g, '-')).then(res => {
               if (res.status === 201) {
                 console.log(res)
                 this.$message({
