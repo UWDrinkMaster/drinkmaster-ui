@@ -143,7 +143,6 @@
           password: [{required: true, message: 'Password can\'t be empty', trigger: 'blur'}],
           email: [{required: true, type: 'email', message: 'Please input the correct email address'}],
           age: [{required: true, message: 'Please scan your id'}]
-
         },
         loading: false
       }

@@ -10,6 +10,7 @@ import {orderApi} from "@/api/order";
 import {userApi} from "@/api/user";
 import {profileApi} from "@/api/profile";
 
+
 Vue.prototype.$mqttApi = mqttApi;
 Vue.prototype.$orderApi = orderApi;
 Vue.prototype.$userApi = userApi;

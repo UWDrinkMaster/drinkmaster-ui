@@ -19,6 +19,7 @@
           </el-select></li >
       </ul>
       <button style=" background: linear-gradient(180deg, #F9E8A8 0%, #F4C317 91%); border-radius: 24px;display: block; margin-left: auto;margin-right: auto;">
+
         <div style="color: white; font-size: 18px; font-family: Source Sans Pro; font-weight: 600; line-height: 28px; word-wrap: break-word" @click="logout">Sign Out</div>
       </button>
     </div>
@@ -38,7 +39,6 @@
       },
       methods:{
        // logout(){ console.log(this.defaultAllergyOptions)},
-
         logout() {
           // this.$axios.get('logout').then(res=>{
           //   if(res&&res.status===200){
@@ -99,6 +99,7 @@
       mounted() {
         this.getDefaultAllergyList();
         this.getUserAllergyList();
+
       }
     };
 </script>
