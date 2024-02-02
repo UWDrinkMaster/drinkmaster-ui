@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button @click="openGame" v-if="!testStarted">Start Trail Making Test A</el-button>
+    <el-button @click="openGame" v-if="!testStarted">Confirm</el-button>
 
     <el-dialog
       :visible.sync="dialogVisible"
@@ -8,11 +8,17 @@
       @close="closeDialog"
       :modalAppendToBody="false"
       center fullscreen>
-        <div v-if="!testStarted" style="text-align: center;">
+        <div v-if="!testStarted && !drunk" style="text-align: center;">
           <p>Please complete the following test to ensure that you are suitable to order more drinks.</p>
           <p>There will be 25 circles that appear on your screen. Draw lines to connect the circles in ascending order from 1 to 25 as quickly as possible.</p>
           <p>Click the "Start Test" button when you are ready.</p>
           <el-button @click="startTest" v-if="!testStarted">Start Test</el-button>
+        </div>
+
+        <div v-if="!testStarted && drunk" style="text-align: center;">
+          <p>You previously failed the test and have been deemed unsuitable for more drinks.</p>
+          <p>Please wait {{ timeLeft }} minutes before attempting the test again.</p>
+          <el-button @click="closeDialog">Close</el-button>
         </div>
 
         <div v-if="testStarted && !testFinished">
@@ -75,7 +81,9 @@ export default {
       shuffledCircles: [],
       countdownStarted: false,
       countdown: 3,
-      drawingEnabled: false
+      drawingEnabled: false,
+      drunk: false,
+      timeLeft: 0
     };
   },
   mounted() {
@@ -87,6 +95,27 @@ export default {
   },
   methods: {
     openGame() {
+      // make an API call to check the last score
+      this.$userApi.getUser(this.$store.getters.getUser.id).then(res => {
+        if (res.status === 200) {
+            // check last score and last time
+            let last_test_time = res.data.last_sobriety_test_at
+            let last_test_score = res.data.last_sobriety_test_score
+            if (last_test_score > 60 && last_test_score < 78 && !hasTimePassed(last_test_time, 15)) {
+              this.drunk = true;
+              this.timeLeft = getTimeDiff(last_test_time, 15);
+              return;
+            } else if (last_test_score > 78 && !hasTimePassed(last_test_time, 30)) {
+              this.drunk = true;
+              this.timeLeft = getTimeDiff(last_test_time, 30);
+              return;
+            }
+          }
+      }).catch(err => {
+        console.log(err.response);
+        this.$message.error(err.response.data.message);
+      });
+      this.drunk = false;
       this.dialogVisible = true;
       this.shuffledCircles = this.shuffleCircles()
       this.countdown = 3;
@@ -237,8 +266,14 @@ export default {
 
       // Record the final time
       const finalTime = this.time;
+      this.$userApi.updateSobrietyScore(finalTime, this.$store.getters.getUser.id).then(res => {
+        console.log(res)
+      }).catch(err => {
+        this.$message.error(err.response.data.message)
+      })
+
       this.testFinished = true;
-      console.log('Game completed in', finalTime, 'seconds');
+      this.$emit('testFinished', { passed: finalTime < 60, time: finalTime });
     },
     initializeCanvas() {
       const canvas = this.$refs.canvas;
@@ -250,6 +285,27 @@ export default {
         this.canvasContext.lineWidth = 2; // Set line width
       }
     },
+    hasTimePassed(timestamp, minutesPassed) {
+      // Current time
+      const now = new Date();
+      const givenTime = new Date(timestamp);
+      const difference = now - givenTime;
+
+      //minutes in milliseconds
+      const minutes = minutesPassed * 60 * 1000;
+
+      return difference > minutes;
+    },
+    getTimeDiff(timestamp, minutesPassed){
+      const now = new Date();
+      const givenTime = new Date(timestamp);
+      const difference = now - givenTime;
+
+      //minutes in milliseconds
+      const minutes = minutesPassed * 60 * 1000;
+
+      return (minutes - difference)/60/1000;
+    }
   },
 };
 </script>
