@@ -11,14 +11,12 @@
       <el-col :span="10" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
         <el-card :body-style="{ padding: '0px' }" >
           <img src="../../../assets/img/Mojito.jpg" class="image">
-          <div style="padding: 10px;">
+          <div style="padding: 10px; text-align: center;">
             <span>Drink Sample</span>
             <div class="bottom clearfix">
-              <el-button  size="mini" @click="dialogFormVisible = true" icon="el-icon-edit"></el-button>
-
+              <el-button  size="mini" @click="dialogFormVisible = true" icon="el-icon-edit" style="display: inline-block;"></el-button>
+              <SobrietyTest @testFinished="handleTestFinished"/>
               <!--<el-button type="text" size="mini" class="button" style="float: left" @click="dialogFormVisible = true" round="true">Customize</el-button>-->
-
-              <el-button  size="mini" class="button"  @click="orderDrink" round>Order</el-button>
             </div>
           </div>
         </el-card>
@@ -30,12 +28,12 @@
       :visible.sync="drinkOrderPendingStep1"
       width="80%"
       center>
-      <span>Your drink is ready to be mixed.
-Please confirm you put your bottle on the machine  </span>
+      <span>Drinkmaster is ready to mix your drink.
+Please confirm the drink cup has been placed in the machine.</span>
       <span slot="footer" class="dialog-footer">
-            <el-button  type="warning" @click="drinkOrderPendingStep1 = false">No, I haven't.</el-button>
-    <el-button  @click="handleConfirmation">Yes, I put!</el-button>
-  </span>
+            <el-button  type="warning" @click="drinkOrderPendingStep1 = false">Close</el-button>
+            <el-button  @click="handleConfirmation">Confirm</el-button>
+      </span>
     </el-dialog>
 
     <el-dialog
@@ -96,74 +94,77 @@ Please confirm you put your bottle on the machine  </span>
 
 <script>
   import '@/assets/css/main.css';
+  import SobrietyTest from '../SobrietyTest.vue';
 
   export default {
     name: "PopularDrinks",
     data() {
-      return {
-        machineId: 1,
-        transId: -1,
-        drinkOrderPendingStep1: false,
-        drinkOrderPendingStep2: false,
-        drinkOrderPendingStep3: false,
-        drinkDetailDialog: false,
-        dialogFormVisible: false,
-        form: {
-          name: '',
-          ingredientA: 1,
-          ingredientB: 2,
-          ingredientC: 1,
-          ingredientD: 2,
-        },
-        formLabelWidth: '100px'
-      };
+        return {
+            machineId: 1,
+            transId: -1,
+            drinkOrderPendingStep1: false,
+            drinkOrderPendingStep2: false,
+            drinkOrderPendingStep3: false,
+            drinkDetailDialog: false,
+            dialogFormVisible: false,
+            form: {
+                name: '',
+                ingredientA: 1,
+                ingredientB: 2,
+                ingredientC: 1,
+                ingredientD: 2,
+            },
+            formLabelWidth: '100px',
+        };
     },
     methods: {
-
-      handleConfirmation() {
-        const Ingredient1 = parseInt(this.form.ingredientA)
-        const Ingredient2 = parseInt(this.form.ingredientB)
-        const Ingredient3 = parseInt(this.form.ingredientC)
-        const Ingredient4 = parseInt(this.form.ingredientD)
-        const transId = parseInt(this.transId)
-        const machineId = parseInt(this.machineId)
-
-
-        const pourContent = [{Ingredient1}, {Ingredient2}, {Ingredient3},{Ingredient4} ];
-        this.$mqttApi.mqttPour('1',machineId,transId,pourContent)
-        this.drinkOrderPendingStep1 = false;
-
-        this.openNewDialog();
-      },
-      openNewDialog() {
-        this.drinkOrderPendingStep2 = true;
-      },
-      handleMixing(){
-      this.drinkOrderPendingStep2 = false;
-      this.drinkOrderPendingStep3 = true;
-      },
-      openDrinkDetail(){
-        this.dialogFormVisible = true;
-      },
-      orderDrink(){
-
-        let userId = -1;
-        if(this.$store.getters.getUser){
-          userId = this.$store.getters.getUser.id
-        }
-        this.$orderApi.createOrder(2, this.machineId, 1, userId).then(res=>{
-          if(res.status===201){
-            this.transId = res.data.id
-            this.drinkOrderPendingStep1 = true;
+        handleConfirmation() {
+            const Ingredient1 = parseInt(this.form.ingredientA);
+            const Ingredient2 = parseInt(this.form.ingredientB);
+            const Ingredient3 = parseInt(this.form.ingredientC);
+            const Ingredient4 = parseInt(this.form.ingredientD);
+            const transId = parseInt(this.transId);
+            const machineId = parseInt(this.machineId);
+            const pourContent = [{ Ingredient1 }, { Ingredient2 }, { Ingredient3 }, { Ingredient4 }];
+            this.$mqttApi.mqttPour('1', machineId, transId, pourContent);
+            this.drinkOrderPendingStep1 = false;
+            this.openNewDialog();
+        },
+        handleTestFinished(result) {
+          if (result.passed) {
+            this.orderDrink()
+          } else {
+            this.drinkOrderPendingStep1 = false;
           }
-        }).catch(err=>{
-          console.log(err.response)
-          this.$message.error(err.response.data.message)
-        })
-      }
-
-    }
-  }
+        },
+        openNewDialog() {
+            this.drinkOrderPendingStep2 = true;
+        },
+        handleMixing() {
+            this.drinkOrderPendingStep2 = false;
+            this.drinkOrderPendingStep3 = true;
+        },
+        openDrinkDetail() {
+            this.dialogFormVisible = true;
+        },
+        orderDrink() {
+            let userId = -1;
+            if (this.$store.getters.getUser) {
+                userId = this.$store.getters.getUser.id;
+            }
+            this.$orderApi.createOrder(2, this.machineId, 1, userId).then(res => {
+                if (res.status === 201) {
+                    this.transId = res.data.id;
+                    this.drinkOrderPendingStep1 = true;
+                }
+            }).catch(err => {
+                console.log(err.response);
+                this.$message.error(err.response.data.message);
+            });
+        }
+    },
+    components: { SobrietyTest }
+}
 </script>
 
 <style scoped>
@@ -191,6 +192,9 @@ Please confirm you put your bottle on the machine  </span>
   .bottom {
     margin-top: 13px;
     line-height: 12px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .button {
@@ -210,5 +214,11 @@ Please confirm you put your bottle on the machine  </span>
 
   .clearfix:after {
     clear: both
+  }
+  .dialog-footer{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-evenly;
   }
 </style>

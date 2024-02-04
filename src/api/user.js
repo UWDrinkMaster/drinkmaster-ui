@@ -14,5 +14,15 @@ export const userApi ={
         password,
         dateOfBirth,
       })
+  },
+  getUser (userId){
+    return http
+    .get('/user/' + userId)
+  },
+  updateSobrietyScore(score, userId){
+    return http.post('/user/sobriety_test', {
+      score,
+      userId
+    })
   }
 }
