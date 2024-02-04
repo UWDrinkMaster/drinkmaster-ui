@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button @click="openGame" v-if="!testStarted">Confirm</el-button>
+    <el-button size="mini" @click="openGame" v-if="!testStarted" round>Order</el-button>
 
     <el-dialog
       :visible.sync="dialogVisible"
@@ -17,8 +17,8 @@
 
         <div v-if="!testStarted && drunk" style="text-align: center;">
           <p>You previously failed the test and have been deemed unsuitable for more drinks.</p>
-          <p>Please wait {{ timeLeft }} minutes before attempting the test again.</p>
-          <el-button @click="closeDialog">Close</el-button>
+          <p>Please wait {{ (Math.round(timeLeft * 100) / 100).toFixed(2) }} minutes before attempting the test again.</p>
+          <el-button @click="handleFinish">Close</el-button>
         </div>
 
         <div v-if="testStarted && !testFinished">
@@ -47,7 +47,7 @@
         </div>
 
         <div v-if="testFinished" style="text-align: center;">
-          <p>You finished the test in {{ time }} seconds.</p>
+          <p>You finished the test in {{ (Math.round(time * 100) / 100).toFixed(2) }} seconds.</p>
           <!-- add logic here to check if greater than the pass fail time for each user -->
           <div v-if="time < 60">
             <p>Congratulations, you passed the test. You may proceed with ordering drinks. Enjoy!</p>
@@ -55,7 +55,7 @@
           <div v-else>
             <p>Unforunately, you failed the test. Please wait until you are sober before trying the test again.</p>
           </div>
-          <el-button @click="closeDialog">Finish</el-button>
+          <el-button @click="handleFinish">Finish</el-button>
         </div>
     </el-dialog>
   </div>
@@ -101,24 +101,30 @@ export default {
             // check last score and last time
             let last_test_time = res.data.last_sobriety_test_at
             let last_test_score = res.data.last_sobriety_test_score
-            if (last_test_score > 60 && last_test_score < 78 && !hasTimePassed(last_test_time, 15)) {
+            console.log (last_test_score, last_test_time)
+            if (last_test_score > 45 && last_test_score < 78 && !this.hasTimePassed(last_test_time, 15)) {
               this.drunk = true;
-              this.timeLeft = getTimeDiff(last_test_time, 15);
+              this.timeLeft = this.getTimeDiff(last_test_time, 15);
               return;
-            } else if (last_test_score > 78 && !hasTimePassed(last_test_time, 30)) {
+            } else if (last_test_score > 78 && !this.hasTimePassed(last_test_time, 30)) {
               this.drunk = true;
-              this.timeLeft = getTimeDiff(last_test_time, 30);
+              this.timeLeft = this.getTimeDiff(last_test_time, 30);
+              return;
+            } else if (last_test_score < 45 && !this.hasTimePassed(last_test_time, 15)) { 
+              //allow the user to bypass the test if they passed 15 mins ago
+              this.$emit('testFinished', { passed: true });
+              this.closeDialog()
               return;
             }
+            this.drunk = false;
+            this.dialogVisible = true;
+            this.shuffledCircles = this.shuffleCircles()
+            this.countdown = 3;
           }
       }).catch(err => {
         console.log(err.response);
         this.$message.error(err.response.data.message);
       });
-      this.drunk = false;
-      this.dialogVisible = true;
-      this.shuffledCircles = this.shuffleCircles()
-      this.countdown = 3;
     },
     startCountdown() {
       this.countdownStarted = true;
@@ -273,7 +279,11 @@ export default {
       })
 
       this.testFinished = true;
-      this.$emit('testFinished', { passed: finalTime < 60, time: finalTime });
+    },
+    handleFinish() {
+      const finalTime = this.time;
+      this.$emit('testFinished', { passed: finalTime < 60 });
+      this.closeDialog()
     },
     initializeCanvas() {
       const canvas = this.$refs.canvas;

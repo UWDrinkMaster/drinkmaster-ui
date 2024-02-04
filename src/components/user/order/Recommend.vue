@@ -11,14 +11,13 @@
       <el-col :span="10" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
         <el-card :body-style="{ padding: '0px' }" >
           <img src="../../../assets/img/drink_sample_1.png" class="image">
-          <div style="padding: 10px;">
+          <div style="padding: 10px; text-align: center;">
             <span>Recommended Drink Sample</span>
             <div class="bottom clearfix">
               <el-button  size="mini" @click="dialogFormVisible = true" icon="el-icon-edit"></el-button>
 
               <!--<el-button type="text" size="mini" class="button" style="float: left" @click="dialogFormVisible = true" round="true">Customize</el-button>-->
-
-              <el-button  size="mini" class="button"  @click="drinkOrderPendingStep1 = true" round>Order</el-button>
+              <SobrietyTest @testFinished="handleTestFinished"/>
             </div>
           </div>
         </el-card>
@@ -30,12 +29,12 @@
       :visible.sync="drinkOrderPendingStep1"
       width="80%"
       center>
-      <span>Your drink is ready to be mixed.
-Please confirm you put your bottle on the machine  </span>
+      <span>Drinkmaster is ready to mix your drink.
+Please confirm the drink cup has been placed in the machine.</span>
       <span slot="footer" class="dialog-footer">
-            <el-button  type="primary" @click="drinkOrderPendingStep1 = false" style="float:left">No, I haven't.</el-button>
-    <el-button type="primary" @click="handleConfirmation">Yes, I put!</el-button>
-  </span>
+            <el-button  type="warning" @click="drinkOrderPendingStep1 = false">Close</el-button>
+            <el-button  @click="handleConfirmation">Confirm</el-button>
+      </span>
     </el-dialog>
 
     <el-dialog
@@ -96,43 +95,51 @@ Please confirm you put your bottle on the machine  </span>
 
 <script>
   import '@/assets/css/main.css';
+  import SobrietyTest from '../SobrietyTest.vue';
 
   export default {
     name: "Recommended",
     data() {
-      return {
-        drinkOrderPendingStep1: false,
-        drinkOrderPendingStep2: false,
-        drinkOrderPendingStep3: false,
-        drinkDetailDialog: false,
-        dialogFormVisible: false,
-        form: {
-          name: '',
-          ingredientA: '',
-          ingredientB: '',
-        },
-        formLabelWidth: '120px'
-      };
+        return {
+            drinkOrderPendingStep1: false,
+            drinkOrderPendingStep2: false,
+            drinkOrderPendingStep3: false,
+            drinkDetailDialog: false,
+            dialogFormVisible: false,
+            form: {
+                name: '',
+                ingredientA: '',
+                ingredientB: '',
+            },
+            formLabelWidth: '120px'
+        };
     },
     methods: {
-
-      handleConfirmation() {
-        this.drinkOrderPendingStep1 = false;
-
-        this.openNewDialog();
-      },
-      openNewDialog() {
-        this.drinkOrderPendingStep2 = true;
-      },
-      handleMixing(){
-        this.drinkOrderPendingStep2 = false;
-        this.drinkOrderPendingStep3 = true;
-      },
-      openDrinkDetail(){
-        this.dialogFormVisible = true;
-      }
-    }
-  }
+        handleConfirmation() {
+            this.drinkOrderPendingStep1 = false;
+            this.openNewDialog();
+        },
+        handleTestFinished(result) {
+            if (result.passed) {
+                this.drinkOrderPendingStep1 = true;
+            }
+            else {
+                this.drinkOrderPendingStep1 = false;
+            }
+        },
+        openNewDialog() {
+            this.drinkOrderPendingStep2 = true;
+        },
+        handleMixing() {
+            this.drinkOrderPendingStep2 = false;
+            this.drinkOrderPendingStep3 = true;
+        },
+        openDrinkDetail() {
+            this.dialogFormVisible = true;
+        }
+    },
+    components: { SobrietyTest }
+}
 </script>
 
 <style scoped>
@@ -168,6 +175,9 @@ Please confirm you put your bottle on the machine  </span>
   .bottom {
     margin-top: 13px;
     line-height: 12px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .button {

@@ -11,14 +11,12 @@
       <el-col :span="10" v-for="(o, index) in 2" :key="o" :offset="index > 0 ? 2 : 0">
         <el-card :body-style="{ padding: '0px' }" >
           <img src="../../../assets/img/Mojito.jpg" class="image">
-          <div style="padding: 10px;">
+          <div style="padding: 10px; text-align: center;">
             <span>Drink Sample</span>
             <div class="bottom clearfix">
-              <el-button  size="mini" @click="dialogFormVisible = true" icon="el-icon-edit"></el-button>
-
+              <el-button  size="mini" @click="dialogFormVisible = true" icon="el-icon-edit" style="display: inline-block;"></el-button>
+              <SobrietyTest @testFinished="handleTestFinished"/>
               <!--<el-button type="text" size="mini" class="button" style="float: left" @click="dialogFormVisible = true" round="true">Customize</el-button>-->
-
-              <el-button  size="mini" class="button"  @click="orderDrink" round>Order</el-button>
             </div>
           </div>
         </el-card>
@@ -34,7 +32,7 @@
 Please confirm the drink cup has been placed in the machine.</span>
       <span slot="footer" class="dialog-footer">
             <el-button  type="warning" @click="drinkOrderPendingStep1 = false">Close</el-button>
-            <SobrietyTest @testFinished="handleTestFinished"/>
+            <el-button  @click="handleConfirmation">Confirm</el-button>
       </span>
     </el-dialog>
 
@@ -134,7 +132,7 @@ Please confirm the drink cup has been placed in the machine.</span>
         },
         handleTestFinished(result) {
           if (result.passed) {
-            handleConfirmation()
+            this.orderDrink()
           } else {
             this.drinkOrderPendingStep1 = false;
           }
@@ -194,6 +192,9 @@ Please confirm the drink cup has been placed in the machine.</span>
   .bottom {
     margin-top: 13px;
     line-height: 12px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .button {
@@ -213,5 +214,11 @@ Please confirm the drink cup has been placed in the machine.</span>
 
   .clearfix:after {
     clear: both
+  }
+  .dialog-footer{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-evenly;
   }
 </style>
