@@ -5,7 +5,7 @@
     <el-dialog
       :visible.sync="dialogVisible"
       title="Sobriety Test"
-      @close="closeDialog"
+      @close="handleClose"
       :modalAppendToBody="false"
       center fullscreen>
         <div v-if="!testStarted && !drunk" style="text-align: center;">
@@ -18,7 +18,7 @@
         <div v-if="!testStarted && drunk" style="text-align: center;">
           <p>You previously failed the test and have been deemed unsuitable for more drinks.</p>
           <p>Please wait {{ (Math.round(timeLeft * 100) / 100).toFixed(2) }} minutes before attempting the test again.</p>
-          <el-button @click="handleFinish">Close</el-button>
+          <el-button @click="handleClose">Close</el-button>
         </div>
 
         <div v-if="testStarted && !testFinished">
@@ -49,7 +49,7 @@
         <div v-if="testFinished" style="text-align: center;">
           <p>You finished the test in {{ (Math.round(time * 100) / 100).toFixed(2) }} seconds.</p>
           <!-- add logic here to check if greater than the pass fail time for each user -->
-          <div v-if="time < 60">
+          <div v-if="time < 45">
             <p>Congratulations, you passed the test. You may proceed with ordering drinks. Enjoy!</p>
           </div>
           <div v-else>
@@ -105,10 +105,12 @@ export default {
             if (last_test_score > 45 && last_test_score < 78 && !this.hasTimePassed(last_test_time, 15)) {
               this.drunk = true;
               this.timeLeft = this.getTimeDiff(last_test_time, 15);
+              this.dialogVisible = true;
               return;
             } else if (last_test_score > 78 && !this.hasTimePassed(last_test_time, 30)) {
               this.drunk = true;
               this.timeLeft = this.getTimeDiff(last_test_time, 30);
+              this.dialogVisible = true;
               return;
             } else if (last_test_score < 45 && !this.hasTimePassed(last_test_time, 15)) { 
               //allow the user to bypass the test if they passed 15 mins ago
@@ -283,6 +285,10 @@ export default {
     handleFinish() {
       const finalTime = this.time;
       this.$emit('testFinished', { passed: finalTime < 60 });
+      this.closeDialog()
+    },
+    handleClose() {
+      this.$emit('testFinished', { passed: false });
       this.closeDialog()
     },
     initializeCanvas() {

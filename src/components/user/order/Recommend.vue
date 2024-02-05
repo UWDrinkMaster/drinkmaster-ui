@@ -86,7 +86,7 @@ Please confirm the drink cup has been placed in the machine.</span>
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="dialogFormVisible = false">Cancel</el-button>
-    <el-button type="warning" @click="drinkOrderPendingStep1 = true">Order</el-button>
+    <SobrietyTest @testFinished="handleTestFinished"/>
   </span>
     </el-dialog>
 

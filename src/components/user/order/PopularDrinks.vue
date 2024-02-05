@@ -85,7 +85,7 @@ Please confirm the drink cup has been placed in the machine.</span>
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button type="warning" @click="dialogFormVisible = false">Cancel</el-button>
-    <el-button  @click="drinkOrderPendingStep1 = true">Order</el-button>
+    <SobrietyTest @testFinished="handleTestFinished"/>
   </span>
     </el-dialog>
 
@@ -136,6 +136,7 @@ Please confirm the drink cup has been placed in the machine.</span>
           } else {
             this.drinkOrderPendingStep1 = false;
           }
+          this.dialogFormVisible = false;
         },
         openNewDialog() {
             this.drinkOrderPendingStep2 = true;
