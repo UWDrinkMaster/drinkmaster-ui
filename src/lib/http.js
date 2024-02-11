@@ -13,7 +13,7 @@ const http = axios.create({
     'Content-Type': 'application/json;charset=UTF-8'
   },
   timeout: 30000,
-  withCredentials: false
+  withCredentials: (process.env.VUE_APP_CRED==='true')
 });
 
 
