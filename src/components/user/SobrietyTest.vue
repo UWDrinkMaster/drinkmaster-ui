@@ -101,22 +101,25 @@ export default {
             // check last score and last time
             let last_test_time = res.data.last_sobriety_test_at
             let last_test_score = res.data.last_sobriety_test_score
-            console.log (last_test_score, last_test_time)
-            if (last_test_score > 45 && last_test_score < 78 && !this.hasTimePassed(last_test_time, 15)) {
-              this.drunk = true;
-              this.timeLeft = this.getTimeDiff(last_test_time, 15);
-              this.dialogVisible = true;
-              return;
-            } else if (last_test_score > 78 && !this.hasTimePassed(last_test_time, 30)) {
-              this.drunk = true;
-              this.timeLeft = this.getTimeDiff(last_test_time, 30);
-              this.dialogVisible = true;
-              return;
-            } else if (last_test_score < 45 && !this.hasTimePassed(last_test_time, 15)) { 
-              //allow the user to bypass the test if they passed 15 mins ago
-              this.$emit('testFinished', { passed: true });
-              this.closeDialog()
-              return;
+            console.log(last_test_score)
+            console.log(last_test_time)
+            if(last_test_score != null){
+              if (last_test_score > 45 && last_test_score < 78 && !this.hasTimePassed(last_test_time, 15)) {
+                this.drunk = true;
+                this.timeLeft = this.getTimeDiff(last_test_time, 15);
+                this.dialogVisible = true;
+                return;
+              } else if (last_test_score > 78 && !this.hasTimePassed(last_test_time, 30)) {
+                this.drunk = true;
+                this.timeLeft = this.getTimeDiff(last_test_time, 30);
+                this.dialogVisible = true;
+                return;
+              } else if (last_test_score < 45 && !this.hasTimePassed(last_test_time, 15)) { 
+                //allow the user to bypass the test if they passed 15 mins ago
+                this.$emit('testFinished', { passed: true });
+                this.closeDialog()
+                return;
+              }
             }
             this.drunk = false;
             this.dialogVisible = true;

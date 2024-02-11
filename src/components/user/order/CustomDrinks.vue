@@ -4,7 +4,7 @@
     </el-row>
 
   <el-row>
-    <el-col :span="24"><div class="grid-content bg-purple-dark menu">Popular Drinks</div></el-col>
+    <el-col :span="24"><div class="grid-content bg-purple-dark menu">Custom Drinks</div></el-col>
   </el-row>
 
   <div class="scroll-container">
@@ -13,30 +13,40 @@
         <el-card class="card" :body-style="{ padding: '0px' }">
           <div class="content-with-icon">
             <div class="content">
-              <img src="../../../assets/img/Mojito.jpg" class="image">
-              <div style="padding: 10px; text-align: center;">
-                <h5>{{drink.name}}</h5>
-                <p style="white-space: normal; font-size: 12px;">{{drink.description}}</p>
-                <div v-if="drink.is_available">
-                  <div class="bottom clearfix">
-                    <CustomizeDrink button-text='Customize' :ingredient-ids=drink.ingredient_ids :base-drink-name=drink.name></CustomizeDrink>
-                    <SobrietyTest @testFinished="handleTestFinished"/>
-                  </div>
-                </div>
-                <div v-else>
-                  <p>This drink is currently unavailable.</p>
-                </div>
-                <el-tooltip v-if="drink.is_allergic" placement="top">
+          <img src="../../../assets/img/drink_sample_1.png" class="image">
+          <div style="padding: 10px; text-align: center;">
+            <h5>{{drink.name}}</h5>
+            <p class="description">{{drink.description}}</p>
+            <div v-if="drink.is_available">
+              <div class="bottom clearfix">
+                <CustomizeDrink button-text='Customize' :ingredient-ids=drink.ingredient_ids :base-drink-name=drink.name></CustomizeDrink>
+                <SobrietyTest @testFinished="handleTestFinished"/>
+              </div>
+            </div>
+            <div v-else>
+              <p>This drink is currently unavailable.</p>
+            </div>
+            <el-tooltip v-if="drink.is_allergic" placement="top">
                   <template #content>
                     {{ getAllergenText(drink.allergen_ids) }}
                   </template>
                   <i class="el-icon-warning icon-right"></i>
                 </el-tooltip>
-              </div>
-            </div>
+          </div>
+          </div>
           </div>
         </el-card>
       </el-col>
+
+      <el-col :span="10" :offset="1">
+        <el-card class="centered-content" :body-style="{ padding: '0px' }">
+          <h4 style="white-space: normal;">Click the button below to create a custom drink</h4>
+          <div class="bottom clearfix">
+            <CustomizeDrink button-text='Create Custom Drink'></CustomizeDrink>
+          </div>
+        </el-card>
+      </el-col>
+
     </el-row>
   </div>
 
@@ -109,8 +119,8 @@ Please confirm the drink cup has been placed in the machine.</span>
         };
     },
     created() {
-      this.getDrinks()
-      this.getAllergensList()
+      this.getDrinks();
+      this.getAllergensList();
     },
     methods: {
         handleConfirmation() {
@@ -162,7 +172,7 @@ Please confirm the drink cup has been placed in the machine.</span>
             this.$drinkApi.getDrinkMenu(userId).then(res => {
                 if (res.status === 200) {
                   for (let drink of res.data) {
-                    if (drink.is_active && !drink.is_customized) {
+                    if (drink.is_active && drink.is_customized) {
                       this.drinks.push(drink)
                     }
                   }
@@ -191,27 +201,6 @@ Please confirm the drink cup has been placed in the machine.</span>
             return ""
           }
         }
-        // getAllergenText(allergenIds){
-        //   let allergenNames = []
-        //   this.$profileApi.getUserAllergyList(this.$store.getters.getUser.id).then((res)=>{
-        //       if(res&&res.status ===200){
-        //         if(res.data !== null && res.data.length>0){
-        //           for (let allergen of res.data) {
-        //             if (allergenIds.includes(allergen.id)) {
-        //               allergenNames.push(allergen.name)
-        //             }
-        //           }
-        //           console.log(allergenNames)
-        //           if (allergenNames.length > 0) {
-        //             let allergens = allergenNames.join(', ')
-        //             return "WARNING: This drink contains the following allergens that you are allergic to: " + allergens;
-        //           } else {
-        //             return "";
-        //           }
-        //         }
-        //       }
-        //     })
-        // }
     },
     components: { SobrietyTest, CustomizeDrink }
 }
@@ -285,14 +274,31 @@ Please confirm the drink cup has been placed in the machine.</span>
     align-items: baseline;
     justify-content: space-evenly;
   }
-
-  .card{
-    border-radius: 20px; /* Increase border radius for rounded corners */
+  .add-card-container {
+  width: 50vw;
+  height: 50vh;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card{
+    border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    margin-bottom: 16px;
-    overflow-wrap: break-word;
   }
-  .content-with-icon {
+.centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  background-color: #bbc1c9;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 40px;
+}
+.content-with-icon {
   display: flex;
   justify-content: space-between;
   align-items: center;

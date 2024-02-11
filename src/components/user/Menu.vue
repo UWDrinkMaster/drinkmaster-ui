@@ -1,17 +1,17 @@
 <template>
   <div>
     <PopularDrinks></PopularDrinks>
-    <Recommend></Recommend>
+    <CustomDrinks></CustomDrinks>
   </div>
 </template>
 
 <script>
   import PopularDrinks from "@/components/user/order/PopularDrinks";
-  import Recommend from "@/components/user/order/Recommend";
+import CustomDrinks from "./order/CustomDrinks.vue";
 
   export default {
     name: "Menu",
-    components: {PopularDrinks, Recommend},
+    components: { PopularDrinks, CustomDrinks },
     data () {
       return {
         mqttForm: {
