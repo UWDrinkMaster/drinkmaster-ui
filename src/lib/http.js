@@ -10,10 +10,11 @@ import axios from 'axios'
 const http = axios.create({
   baseURL:  process.env.VUE_APP_URL + process.env.VUE_APP_PORT,
   headers: {
+    'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json;charset=UTF-8'
   },
   timeout: 30000,
-  withCredentials: (process.env.VUE_APP_CRED==='true')
+  withCredentials: false
 });
 
 
