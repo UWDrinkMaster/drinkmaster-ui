@@ -38,9 +38,24 @@
     append-to-body
     v-loading = "loading"
   >
+
     <div>
+
       <el-row type="flex" class="row-bg" justify="row-bg">
         <el-col>
+          <el-row :gutter="6">
+            <div >
+              <span class="sub-title">Please select your camera:</span>
+              <el-select v-model="camera">
+                <el-option>-- Select Device --</el-option>
+                <el-option
+                  v-for="device in devices"
+                  :key="device.deviceId"
+                  :value="device.deviceId"
+                >{{ device.label }}</el-option>
+              </el-select>
+            </div>
+          </el-row>
           <div class="grid-content bg-purple" >
             <vue-web-cam
               :device-id="deviceId"
@@ -55,7 +70,9 @@
           </div>
 
           <div class="grid-content bg-purple-light" v-if="this.image !== null && this.image !== 'data:,'">
-            <el-image width="100%" :src="image" alt/>
+
+            <el-image width="100%" :style="{ display: toggleImg ? 'none' : 'inline' }" :src="image" alt/>
+            <!--<el-button icon="el-icon-view" style="position: fixed; right: 5rem" circle @click="changeImgStyle"></el-button>-->
           </div>
           <!--<el-row :gutter="20">-->
           <!--<div>-->
@@ -173,7 +190,8 @@
           email: [{required: true, type: 'email', message: 'Please input the correct email address'}],
           age: [{ validator: checkAge, trigger: 'blur'}]
         },
-        loading: false
+        loading: false,
+        toggleImg: false
       }
     }, methods: {
       scanCard(){
@@ -234,6 +252,10 @@
           console.warn('Cannot compute age, extracted date is not available.');
         }
       },
+      changeImgStyle(){
+        this.toggleImg = !this.toggleImg
+        console.log(this.toggleImg)
+      },
       capture() {
         if (this.$refs.webcam != undefined) {
           this.loading = true;
@@ -283,23 +305,35 @@
         //   this.camera = first.deviceId;
         //   this.deviceId = first.deviceId;
         // }
-        const [last, ...rest] = this.devices.slice().reverse();
-        if (last) {
-          // Assign the deviceId of the last device to the camera and deviceId properties
-          this.camera = last.deviceId;
-          this.deviceId = last.deviceId;
-        }
-      }, async image(val) {
+        // const [last, ...rest] = this.devices.slice().reverse();
+        // if (last) {
+        //   // Assign the deviceId of the last device to the camera and deviceId properties
+        //   this.camera = last.deviceId;
+        //   this.deviceId = last.deviceId;
+        // }
+        this.deviceId = this.camera;
+      },
+      async image(val) {
         if (val !== this.defaultImageData && val !== null) {
           Tesseract.recognize(
             val,
             'eng', // Language code (English in this case)
             { logger: info => console.log(info) } // Optional logger function
           ).then(({ data: { text } }) => {
-            const datePattern = /S00pcoN\s*(\d{4}\/\d{2}\/\d{2})\s*(.*)/;
+            const datePattern = /\b(\d{4}\/\d{2}\/\d{2})\b/g;
             const match = text.match(datePattern);
-            if (match && match.length > 0) {
-              this.extractedDate = match[1];
+            console.log(text)
+            console.log(match)
+            if (match && match.length > 1) {
+              const today = new Date(); // Current date
+              const lastMatchDate = new Date(match[match.length - 1]); // Convert the last matched date to a Date object
+              if (lastMatchDate < today) {
+                this.extractedDate = match[match.length-1];
+              }
+              else{
+                console.warn('Date not found in the expected format');
+                this.extractedDate = '';
+              }
             } else {
               console.warn('Date not found in the expected format');
               this.extractedDate = '';
@@ -362,5 +396,9 @@ if(this.extractedDate ===''&& this.image !== null){
 
   .age_input {
     width: 12rem;
+  }
+
+  .hidden {
+    display: none;
   }
 </style>
