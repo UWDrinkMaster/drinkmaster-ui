@@ -1,7 +1,7 @@
 <template>
     <div>
       <el-button size="mini" @click="showDialog = true" round>{{ buttonText }}</el-button>
-  
+
       <el-dialog title="Customize Your Drink" :visible.sync="showDialog" @close="closeDialog" width="50%">
         <el-form ref="customDrinkForm">
 
@@ -27,9 +27,9 @@
             <el-input v-model="ingredient.amount" type="number"  min=1></el-input>
           </el-form-item>
         </div>
-  
+
         </el-form>
-  
+
         <span slot="footer" class="dialog-footer">
           <el-button @click="closeDialog">Cancel</el-button>
           <el-button type="primary" @click="createCustomDrink">Create</el-button>
@@ -37,12 +37,12 @@
       </el-dialog>
     </div>
   </template>
-  
+
   <script>
 import { reactive } from 'vue';
 
   export default {
-    
+
     data() {
       return {
         showDialog: false,
@@ -61,7 +61,7 @@ import { reactive } from 'vue';
             type: Array,
             default() {
                 return [];
-            } 
+            }
         },
         baseDrinkName: {
             type: String,
@@ -114,7 +114,8 @@ import { reactive } from 'vue';
             if (res.status === 201) {
                 console.log(res)
                 this.closeDialog();
-                window.location.reload();
+                console.log(this.$router.currentRoute)
+              this.$router.go(this.$router.currentRoute)
             }
         }).catch(err => {
             console.log(err.response);
@@ -141,7 +142,7 @@ import { reactive } from 'vue';
     },
   };
   </script>
-  
+
   <style scoped>
   .dialog-footer {
     text-align: right;

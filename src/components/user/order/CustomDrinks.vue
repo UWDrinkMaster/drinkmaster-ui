@@ -171,11 +171,13 @@ Please confirm the drink cup has been placed in the machine.</span>
             }
             this.$drinkApi.getDrinkMenu(userId).then(res => {
                 if (res.status === 200) {
+                  console.log(res.data)
                   for (let drink of res.data) {
                     if (drink.is_active && drink.is_customized) {
                       this.drinks.push(drink)
                     }
                   }
+                  this.drinks.sort((a, b) => new Date(b.modified_at) - new Date(a.modified_at));
                 }
             }).catch(err => {
                 console.log(err.response);
