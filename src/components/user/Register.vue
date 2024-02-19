@@ -107,7 +107,7 @@
 
           <el-col >
             <el-input
-            placeholder= "yyyy/mm/dd"
+            placeholder= "yyyy-mm-dd"
             v-model="extractedDate"
             v-loading="this.extractedDate ===''&& this.image == null"
             :disabled="true">
@@ -214,6 +214,7 @@
             const ageInMilliseconds = currentDate - dateObject;
             const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
             this.registerForm.age = Math.floor(ageInYears);
+            this.extractedDate = this.birthday;
             this.centerDialogVisible = false;
           }else{
             const h = this.$createElement;
@@ -280,7 +281,7 @@
         this.$refs.form.validate((valid) => {
           if (valid) {
             // this.extractedDate.replace(/\//g, '-');
-            this.$userApi.register(this.registerForm.email, this.registerForm.password,this.extractedDate.replace(/\//g, '-')).then(res => {
+            this.$userApi.register(this.registerForm.email, this.registerForm.password,this.extractedDate).then(res => {
               if (res.status === 201) {
                 console.log(res)
                 this.$message({
@@ -328,7 +329,7 @@
               const today = new Date(); // Current date
               const lastMatchDate = new Date(match[match.length - 1]); // Convert the last matched date to a Date object
               if (lastMatchDate < today) {
-                this.extractedDate = match[match.length-1];
+                this.extractedDate = match[match.length-1].replace(/\//g, '-');
               }
               else{
                 console.warn('Date not found in the expected format');

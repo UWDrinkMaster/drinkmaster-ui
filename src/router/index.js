@@ -12,15 +12,15 @@ const routes = [
     redirect:  '/user/login',
   },
 
-  {path: '/user/home', name: 'UserHome', component: ()=>import('../components/user/Home'), redirect: '/user/menu', meta:{requireAuth:true},
+  {path: '/user/home', name: 'UserHome', component: ()=>import('@/components/user/Home'), redirect: '/user/menu', meta:{requireAuth:true},
     children:[
-      {path: '/user/menu',name:'Menu',component: () => import('../components/user/Menu'), meta: {requireAuth: true}},
-      {path: '/user/order',name:'Order',component: () => import('../components/user/order/OrderHistory'), meta: {requireAuth: true}},
-      {path: '/user/profile',name:'Profile',component: () => import('../components/user/Profile'), meta: {requireAuth: true}},
+      {path: '/user/menu',name:'Menu',component: () => import('@/components/user/Menu'), meta: {requireAuth: true}},
+      {path: '/user/order',name:'Order',component: () => import('@/components/user/order/OrderHistory'), meta: {requireAuth: true}},
+      {path: '/user/profile',name:'Profile',component: () => import('@/components/user/Profile'), meta: {requireAuth: true}},
     ]
   },
-  {path: '/user/login',name:'UserLogin',component:()=>import('../components/user/Login')},
-  {path:'/user/register',name:'UserRegister',component:()=>import('../components/user/Register')},
+  {path: '/user/login',name:'UserLogin',component:()=>import('@/components/user/Login')},
+  {path:'/user/register',name:'UserRegister',component:()=>import('@/components/user/Register')},
 ]
 
 const router = new VueRouter({
@@ -45,15 +45,15 @@ export const createRouter =() => new VueRouter({
       redirect: '/user/login',
       component:  UserLogin,
     },
-    {path: '/user/home', name: 'UserHome', component: ()=>import('../components/user/Home'), redirect: '/user/menu',meta: {requireAuth: true},
+    {path: '/user/home', name: 'UserHome', component: ()=>import('@/components/user/Home'), redirect: '/user/menu',meta: {requireAuth: true},
       children:[
-        {path: '/user/menu',name:'Menu',component: () => import('../components/user/Menu'), meta: {requireAuth: true}},
-        {path: '/user/order',name:'Order',component: () => import('../components/user/order/OrderHistory'), meta: {requireAuth: true}},
-        {path: '/user/profile',name:'Profile',component: () => import('../components/user/Profile'), meta: {requireAuth: true}},
+        {path: '/user/menu',name:'Menu',component: () => import('@/components/user/Menu'), meta: {requireAuth: true}},
+        {path: '/user/order',name:'Order',component: () => import('@/components/user/order/OrderHistory'), meta: {requireAuth: true}},
+        {path: '/user/profile',name:'Profile',component: () => import('@/components/user/Profile'), meta: {requireAuth: true}},
       ]
     },
-    {path: '/user/login',name:'UserLogin',component:()=>import('../components/user/Login')},
-    {path:'/user/register',name:'UserRegister',component:()=>import('../components/user/Register')},
+    {path: '/user/login',name:'UserLogin',component:()=>import('@/components/user/Login')},
+    {path:'/user/register',name:'UserRegister',component:()=>import('@/components/user/Register')},
   ]
 })
 
