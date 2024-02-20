@@ -112,7 +112,7 @@ Please confirm the drink cup has been placed in the machine.</span>
     methods: {
         handleTestFinished(result) {
           if (result.passed) {
-            console.log("testfinished, drink id is:" + result.drinkId)
+            //console.log("testfinished, drink id is:" + result.drinkId)
             this.selectedDrinkId = result.drinkId;
             this.drinkOrderPendingStep1 = true;
           }
@@ -122,8 +122,8 @@ Please confirm the drink cup has been placed in the machine.</span>
             this.drinkOrderPendingStep3 = true;
         },
         updateSelectedDrink(drinkId) {
-          console.log("drinkId is :" + drinkId)
-          this.selectedDrinkId = drinkId; 
+          //console.log("drinkId is :" + drinkId)
+          this.selectedDrinkId = drinkId;
         },
         orderDrink() {
             let userId = -1;

@@ -25,19 +25,19 @@
           <div class="timer">
             {{ time.toFixed(2) }}
           </div>
-          <canvas ref="canvas" class="drawing-canvas" 
-          @mousedown="handleMouseDown" 
-          @mouseup="handleMouseUp" 
+          <canvas ref="canvas" class="drawing-canvas"
+          @mousedown="handleMouseDown"
+          @mouseup="handleMouseUp"
           @mousemove="handleMouseMove"></canvas>
-          
+
           <div v-if="countdownStarted" class="countdown">
             {{ countdown }}
           </div>
 
           <div class="game-container">
-            <div v-for="circle in shuffledCircles" 
-            :key="circle.id" 
-            class="circle" 
+            <div v-for="circle in shuffledCircles"
+            :key="circle.id"
+            class="circle"
             :style="{ top: circle.top + 'px', left: circle.left + 'px', backgroundColor: circle.completed ? '#2ecc71' :'#ffffff' }"
             @mouseover="circleHover(circle)"
             @touchstart="circleHover(circle)">
@@ -118,8 +118,8 @@ export default {
                 this.timeLeft = this.getTimeDiff(last_test_time, 30);
                 this.dialogVisible = true;
                 return;
-              } 
-              else if (last_test_score < 45 && !this.hasTimePassed(last_test_time, 15)) { 
+              }
+              else if (last_test_score < 45 && !this.hasTimePassed(last_test_time, 15)) {
                 //allow the user to bypass the test if they passed 15 mins ago
                 this.$emit('testFinished', { passed: true, drinkId: this.drinkId });
                 this.closeDialog()
@@ -263,7 +263,7 @@ export default {
         this.canvasContext.clearRect(0, 0, canvas.width, canvas.height);
         this.canvasContext.closePath();
         this.currentLineSegment = []
-        
+
         // Redraw the saved line segments
         this.lineSegments.forEach(segment => {
           this.canvasContext.beginPath();
@@ -283,7 +283,7 @@ export default {
       // Record the final time
       const finalTime = this.time;
       this.$userApi.updateSobrietyScore(finalTime, this.$store.getters.getUser.id).then(res => {
-        console.log(res)
+        //console.log(res)
       }).catch(err => {
         this.$message.error(err.response.data.message)
       })

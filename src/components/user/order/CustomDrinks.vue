@@ -121,7 +121,7 @@ Please confirm the drink cup has been placed in the machine.</span>
     methods: {
         handleTestFinished(result) {
           if (result.passed) {
-            console.log("testfinished, drink id is:" + result.drinkId)
+          //  console.log("testfinished, drink id is:" + result.drinkId)
             this.selectedDrinkId = result.drinkId;
             this.drinkOrderPendingStep1 = true;
           }
@@ -153,7 +153,7 @@ Please confirm the drink cup has been placed in the machine.</span>
             }
             this.$drinkApi.getDrinkMenu(userId).then(res => {
                 if (res.status === 200) {
-                  console.log(res.data)
+                  //console.log(res.data)
                   for (let drink of res.data) {
                     if (drink.is_active && drink.is_customized) {
                       this.drinks.push(drink)
