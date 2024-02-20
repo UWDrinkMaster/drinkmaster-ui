@@ -20,7 +20,7 @@
                 <div v-if="drink.is_available">
                   <div class="bottom clearfix">
                     <CustomizeDrink button-text='Customize' :ingredient-ids=drink.ingredient_ids :base-drink-name=drink.name></CustomizeDrink>
-                    <SobrietyTest @testFinished="handleTestFinished"/>
+                    <SobrietyTest :drinkId="drink.id" @testFinished="handleTestFinished"/>
                   </div>
                 </div>
                 <div v-else>
@@ -44,12 +44,13 @@
       title="Order Confirm"
       :visible.sync="drinkOrderPendingStep1"
       width="80%"
+      :modalAppendToBody="false"
       center>
       <span>Drinkmaster is ready to mix your drink.
 Please confirm the drink cup has been placed in the machine.</span>
       <span slot="footer" class="dialog-footer">
             <el-button  type="warning" @click="drinkOrderPendingStep1 = false">Close</el-button>
-            <el-button  @click="handleConfirmation">Confirm</el-button>
+            <el-button  @click="orderDrink">Confirm</el-button>
       </span>
     </el-dialog>
 
@@ -57,6 +58,7 @@ Please confirm the drink cup has been placed in the machine.</span>
       title="Your Drink is mixing!"
       :visible.sync="drinkOrderPendingStep2"
       width="80%"
+      :modalAppendToBody="false"
       center>
       <span>
               Mixing... </span>
@@ -70,11 +72,12 @@ Please confirm the drink cup has been placed in the machine.</span>
       title="Your Drink is ready!"
       :visible.sync="drinkOrderPendingStep3"
       width="80%"
+      :modalAppendToBody="false"
       center>
       <span>
-              Please click on the confirm button, after you take your drink! </span>
+              Your drink has finished mixing. Enjoy! </span>
       <span slot="footer" class="dialog-footer">
-          <el-button @click="drinkOrderPendingStep3 = false">Confirm</el-button>
+          <el-button @click="drinkOrderPendingStep3 = false">Finish</el-button>
       </span>
     </el-dialog>
 
@@ -92,17 +95,11 @@ Please confirm the drink cup has been placed in the machine.</span>
         return {
             machineId: 1,
             transId: -1,
+            selectedDrinkId: -1,
             drinkOrderPendingStep1: false,
             drinkOrderPendingStep2: false,
             drinkOrderPendingStep3: false,
             drinkDetailDialog: false,
-            form: {
-                name: '',
-                ingredientA: 1,
-                ingredientB: 2,
-                ingredientC: 1,
-                ingredientD: 2,
-            },
             formLabelWidth: '100px',
             drinks: [],
             allergens: []
@@ -113,41 +110,31 @@ Please confirm the drink cup has been placed in the machine.</span>
       this.getAllergensList()
     },
     methods: {
-        handleConfirmation() {
-            const Ingredient1 = parseInt(this.form.ingredientA);
-            const Ingredient2 = parseInt(this.form.ingredientB);
-            const Ingredient3 = parseInt(this.form.ingredientC);
-            const Ingredient4 = parseInt(this.form.ingredientD);
-            const transId = parseInt(this.transId);
-            const machineId = parseInt(this.machineId);
-            const pourContent = [{ Ingredient1 }, { Ingredient2 }, { Ingredient3 }, { Ingredient4 }];
-            this.$mqttApi.mqttPour('1', machineId, transId, pourContent);
-            this.drinkOrderPendingStep1 = false;
-            this.openNewDialog();
-        },
         handleTestFinished(result) {
           if (result.passed) {
-            this.orderDrink()
-          } else {
-            this.drinkOrderPendingStep1 = false;
+            console.log("testfinished, drink id is:" + result.drinkId)
+            this.selectedDrinkId = result.drinkId;
+            this.drinkOrderPendingStep1 = true;
           }
-        },
-        openNewDialog() {
-            this.drinkOrderPendingStep2 = true;
         },
         handleMixing() {
             this.drinkOrderPendingStep2 = false;
             this.drinkOrderPendingStep3 = true;
+        },
+        updateSelectedDrink(drinkId) {
+          console.log("drinkId is :" + drinkId)
+          this.selectedDrinkId = drinkId; 
         },
         orderDrink() {
             let userId = -1;
             if (this.$store.getters.getUser) {
                 userId = this.$store.getters.getUser.id;
             }
-            this.$orderApi.createOrder(2, this.machineId, 1, userId).then(res => {
+            this.$orderApi.createOrder(this.selectedDrinkId, userId).then(res => {
                 if (res.status === 201) {
                     this.transId = res.data.id;
-                    this.drinkOrderPendingStep1 = true;
+                    this.drinkOrderPendingStep1 = false;
+                    this.drinkOrderPendingStep2 = true;
                 }
             }).catch(err => {
                 console.log(err.response);
@@ -191,27 +178,6 @@ Please confirm the drink cup has been placed in the machine.</span>
             return ""
           }
         }
-        // getAllergenText(allergenIds){
-        //   let allergenNames = []
-        //   this.$profileApi.getUserAllergyList(this.$store.getters.getUser.id).then((res)=>{
-        //       if(res&&res.status ===200){
-        //         if(res.data !== null && res.data.length>0){
-        //           for (let allergen of res.data) {
-        //             if (allergenIds.includes(allergen.id)) {
-        //               allergenNames.push(allergen.name)
-        //             }
-        //           }
-        //           console.log(allergenNames)
-        //           if (allergenNames.length > 0) {
-        //             let allergens = allergenNames.join(', ')
-        //             return "WARNING: This drink contains the following allergens that you are allergic to: " + allergens;
-        //           } else {
-        //             return "";
-        //           }
-        //         }
-        //       }
-        //     })
-        // }
     },
     components: { SobrietyTest, CustomizeDrink }
 }
@@ -305,5 +271,6 @@ Please confirm the drink cup has been placed in the machine.</span>
 .icon-right {
   padding: 10px;
   font-size: 32px; /* Adjust the size as needed */
+  color: #FA3939;
 }
 </style>
