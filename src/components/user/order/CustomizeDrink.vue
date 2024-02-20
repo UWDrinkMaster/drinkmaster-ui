@@ -89,7 +89,7 @@ import { reactive } from 'vue';
                 }
             }
         }).catch(err => {
-            console.log(err.response);
+            //console.log(err.response);
             this.$message.error(err.response.data.message);
         });
       },
@@ -112,9 +112,9 @@ import { reactive } from 'vue';
         let userId = this.$store.getters.getUser.id;
         this.$drinkApi.createCustomDrink(drinkIngredients, this.drinkName, userId).then(res => {
             if (res.status === 201) {
-                console.log(res)
+                //console.log(res)
                 this.closeDialog();
-                console.log(this.$router.currentRoute)
+                //console.log(this.$router.currentRoute)
               this.$router.go(this.$router.currentRoute)
             }
         }).catch(err => {

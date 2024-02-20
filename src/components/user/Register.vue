@@ -196,7 +196,7 @@
     }, methods: {
       scanCard(){
         this.centerDialogVisible = true;
-        console.log(this.image)
+        //console.log(this.image)
         this.age = '';
         this.managerCode = '';
         this.image = null;
@@ -255,12 +255,12 @@
       },
       changeImgStyle(){
         this.toggleImg = !this.toggleImg
-        console.log(this.toggleImg)
+        //console.log(this.toggleImg)
       },
       capture() {
         if (this.$refs.webcam != undefined) {
           this.loading = true;
-          console.log(this.$refs.webcam.capture())
+          //console.log(this.$refs.webcam.capture())
           this.image = this.$refs.webcam.capture();
         }
         return this.image;
@@ -283,7 +283,7 @@
             // this.extractedDate.replace(/\//g, '-');
             this.$userApi.register(this.registerForm.email, this.registerForm.password,this.extractedDate).then(res => {
               if (res.status === 201) {
-                console.log(res)
+                //console.log(res)
                 this.$message({
                   showClose: true, message: 'Registered successfully!', type: 'success'
                 });
@@ -323,8 +323,8 @@
           ).then(({ data: { text } }) => {
             const datePattern = /\b(\d{4}\/\d{2}\/\d{2})\b/g;
             const match = text.match(datePattern);
-            console.log(text)
-            console.log(match)
+            //console.log(text)
+            //console.log(match)
             if (match && match.length > 1) {
               const today = new Date(); // Current date
               const lastMatchDate = new Date(match[match.length - 1]); // Convert the last matched date to a Date object

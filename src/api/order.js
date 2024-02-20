@@ -6,5 +6,11 @@ export const orderApi ={
         drinkId,
         userId
       })
-  }
+  },
+  getUserOrders ( userId) {
+    return http
+      .get('/order/user/' + userId)
+  },
+
+
 }

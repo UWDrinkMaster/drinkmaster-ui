@@ -13,5 +13,11 @@ export const drinkApi ={
       name,
       userId
     })
+  },
+  getDrinkById(drinkId){
+    return http
+      .get('/drink/' + drinkId)
   }
+
+
 }
