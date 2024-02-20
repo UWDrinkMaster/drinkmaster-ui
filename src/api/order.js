@@ -1,12 +1,10 @@
 import http from '@/lib/http';
 export const orderApi ={
-  createOrder (drinkId, machineId, quantity, userId) {
+  createOrder (drinkId, userId) {
     return http
       .post('/order/create',{
         drinkId,
-        machineId,
-        quantity,
-        userId,
+        userId
       })
   }
 }
