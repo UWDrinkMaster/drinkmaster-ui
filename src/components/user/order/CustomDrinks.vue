@@ -65,7 +65,7 @@ Please confirm the drink cup has been placed in the machine.</span>
     </el-dialog>
 
     <el-dialog
-      title="Your Drink is mixing!"
+      title="Your Drink is ordered! Please wait :)"
       :visible.sync="drinkOrderPendingStep2"
       width="80%"
       :modalAppendToBody="false"
@@ -74,7 +74,7 @@ Please confirm the drink cup has been placed in the machine.</span>
               Mixing... </span>
       <span slot="footer" class="dialog-footer">
 
-          <el-button  @click="handleMixing">Next</el-button>
+         <!-- <el-button  @click="handleMixing">Next</el-button>-->
       </span>
     </el-dialog>
 
@@ -117,6 +117,34 @@ Please confirm the drink cup has been placed in the machine.</span>
     created() {
       this.getDrinks();
       this.getAllergensList();
+    },
+    mounted() {
+     /* this.$webSocket.subscribe('/topic/order-complete').then((message) => {
+        console.log('Received message:', message.body);
+        console.log('Received message:', message.body);
+        const data = JSON.parse(message.body);
+        // this.message = message.body;
+        if (data.status === "COMPLETED" && data.userId ) {
+          // Open the dialog when a message is received
+          const h = this.$createElement;
+          this.$notify({
+            title: 'Your Order is Ready!',
+            message: h('i', { style: 'color: rgba(253, 213, 79, 0.98)' }, 'Go grab your drink, and you can check your order status in Order History.')
+          });
+          // this.handleMixing();
+        }
+        if (data.status === "CANCELED" && data.userId ) {
+          // Open the dialog when a message is received
+          const h = this.$createElement;
+          this.$notify({
+            title: 'Your Order is Canceled :(',
+            message: h('i', { style: 'color: rgba(253, 213, 79, 0.98)' }, 'Sorry your order is canceled, maybe we are just sold out.')
+          });
+        }
+      }).catch((e)=>{
+        console.log(e)
+      })*/
+
     },
     methods: {
         handleTestFinished(result) {

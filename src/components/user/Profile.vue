@@ -55,6 +55,7 @@
           // this.$axios.get('logout').then(res=>{
           //   if(res&&res.status===200){
               this.$store.commit('LOGOUT')
+          this.$webSocket.disconnect();
               this.$message.success('logout successfully')
               // const newRouter = createRouter()
               // this.$router.matcher = newRouter.matcher

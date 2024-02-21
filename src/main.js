@@ -10,8 +10,9 @@ import {orderApi} from "@/api/order";
 import {userApi} from "@/api/user";
 import {profileApi} from "@/api/profile";
 import { drinkApi } from './api/drinks';
+import {WebSocketJS} from "@/lib/websocket";
 
-
+Vue.prototype.$webSocket = WebSocketJS;
 Vue.prototype.$mqttApi = mqttApi;
 Vue.prototype.$orderApi = orderApi;
 Vue.prototype.$userApi = userApi;

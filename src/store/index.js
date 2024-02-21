@@ -8,7 +8,8 @@ Vue.use(Vuex)
     userinfo:window.localStorage.getItem('userinfo') == null ? '' : JSON.parse(window.localStorage.getItem('userinfo' || '[]')),
     categories:window.sessionStorage.getItem('categories') == null ? [{id: 0, name: "All"},{id: 1, name: "Literature"},{id: 2, name: "Movie"},{id: 3, name: "Culture"},{id: 4, name: "Life"},{id: 5, name: "Sports"},{id: 6, name: "Technology"}] : JSON.parse(window.sessionStorage.getItem('categories' || '[]')),
     initSideIndex:window.sessionStorage.getItem('index') == null ? '0' : JSON.parse(window.sessionStorage.getItem('index' || '[]')),
-    adminMenus:[]
+    adminMenus:[],
+
   },
   getters:{
     getUser(){
