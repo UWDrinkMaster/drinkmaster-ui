@@ -46,6 +46,7 @@
                 _this.$store.commit('LOGIN',res.data)
                 let path  = this.$route.query.redirect;
                 _this.$router.replace({path: path === '/' || path === undefined ? '/user/home' : path}).catch(()=>{})
+                this.$webSocket.connect(this);
               }
             }).catch(err=>{
               console.log(err.response)

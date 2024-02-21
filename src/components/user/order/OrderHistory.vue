@@ -1,11 +1,12 @@
 <template>
   <div>
-    <template>
       <el-table
         :data="historyOrders"
         :row-class-name="tableRowClassName"
+        max-height="50%"
         :default-sort="defaultSort"
-        style="width: 100%; white-space: normal; ">
+        style="width: 100%; white-space: normal;"
+      >
         <el-table-column
           sortable
           prop="drink_name"
@@ -36,7 +37,6 @@
           width="110">
         </el-table-column>
       </el-table>
-    </template>
     <el-button @click="getOrderHistory" class="refresh-button" icon="el-icon-refresh"></el-button>
   </div>
 </template>
@@ -54,15 +54,18 @@
     methods: {
       tableRowClassName({row, rowIndex}) {
         //console.log(row)
-        if (row.status == "PENDING") {
-          return 'warning-row';
-        } else if (row.status == "COMPLETED") {
-          return 'success-row';
-        } else if (row.status == "CANCELED") {
-          return 'danger-row';
-        } else if (row.status == "CREATED") {
-          return 'info-row';
+        if(row){
+          if (row.status == "PENDING") {
+            return 'warning-row';
+          } else if (row.status == "COMPLETED") {
+            return 'success-row';
+          } else if (row.status == "CANCELED") {
+            return 'danger-row';
+          } else if (row.status == "CREATED") {
+            return 'info-row';
+          }
         }
+
         return '';
       }, getOrderHistoryRaw() {
         let userId = -1;
@@ -100,24 +103,27 @@
           }
           return item;
         });
-        this.historyOrders = await Promise.all(this.historyOrdersRaw.map( async(item) => {
-          //console.log("new")
-          //console.log(item)
-          let drinkName = "";
-         await this.$drinkApi.getDrinkById(item.drink_id).then(res => {
-            if (res.status === 200) {
-              drinkName = res.data.name;
-              //console.log({...item, drink_name: drinkName})
-              return {...item, drink_name: drinkName};
-            }
-          }).catch(err => {
-            console.log(err.response);
-            this.$message.error(err.response.data.message);
-            //return {...item, drink_name: drinkName};
-          });
+        if(this.historyOrdersRaw.length>0){
+          this.historyOrders = await Promise.all(this.historyOrdersRaw.map( async(item) => {
+            //console.log("new")
+            //console.log(item)
+            let drinkName = "";
+            await this.$drinkApi.getDrinkById(item.drink_id).then(res => {
+              if (res.status === 200) {
+                drinkName = res.data.name;
+                //console.log({...item, drink_name: drinkName})
+                return {...item, drink_name: drinkName};
+              }
+            }).catch(err => {
+              console.log(err.response);
+              this.$message.error(err.response.data.message);
+              //return {...item, drink_name: drinkName};
+            });
 
-          return {...item, drink_name: drinkName};
-        }));
+            return {...item, drink_name: drinkName};
+          }));
+        }
+
       }
 
 
