@@ -21,7 +21,6 @@
                   <div class="bottom clearfix">
                     <CustomizeDrink button-text='Customize' :ingredient-ids=drink.ingredient_ids :base-drink-name=drink.name></CustomizeDrink>
                     <SobrietyTest :drinkId="drink.id" @testFinished="handleTestFinished"/>
-                    <SobrietyTest :drinkId="drink.id" @testFinished="handleTestFinished"/>
                   </div>
                 </div>
                 <div v-else>
@@ -46,13 +45,11 @@
       :visible.sync="drinkOrderPendingStep1"
       width="80%"
       :modalAppendToBody="false"
-      :modalAppendToBody="false"
       center>
       <span>Drinkmaster is ready to mix your drink.
 Please confirm the drink cup has been placed in the machine.</span>
       <span slot="footer" class="dialog-footer">
             <el-button  type="warning" @click="drinkOrderPendingStep1 = false">Close</el-button>
-            <el-button  @click="orderDrink">Confirm</el-button>
             <el-button  @click="orderDrink">Confirm</el-button>
       </span>
     </el-dialog>
@@ -61,7 +58,6 @@ Please confirm the drink cup has been placed in the machine.</span>
       title="Your Drink is mixing!"
       :visible.sync="drinkOrderPendingStep2"
       width="80%"
-      :modalAppendToBody="false"
       :modalAppendToBody="false"
       center>
       <span>
@@ -77,13 +73,10 @@ Please confirm the drink cup has been placed in the machine.</span>
       :visible.sync="drinkOrderPendingStep3"
       width="80%"
       :modalAppendToBody="false"
-      :modalAppendToBody="false"
       center>
       <span>
               Your drink has finished mixing. Enjoy! </span>
-              Your drink has finished mixing. Enjoy! </span>
       <span slot="footer" class="dialog-footer">
-          <el-button @click="drinkOrderPendingStep3 = false">Finish</el-button>
           <el-button @click="drinkOrderPendingStep3 = false">Finish</el-button>
       </span>
     </el-dialog>
@@ -138,7 +131,6 @@ Please confirm the drink cup has been placed in the machine.</span>
             if (this.$store.getters.getUser) {
                 userId = this.$store.getters.getUser.id;
             }
-            this.$orderApi.createOrder(this.selectedDrinkId, userId).then(res => {
             this.$orderApi.createOrder(this.selectedDrinkId, userId).then(res => {
                 if (res.status === 201) {
                     this.transId = res.data.id;
