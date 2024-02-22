@@ -2,7 +2,7 @@
     <div>
       <el-button size="mini" @click="showDialog = true" round>{{ buttonText }}</el-button>
 
-      <el-dialog title="Customize Your Drink" :visible.sync="showDialog" @close="closeDialog" width="50%">
+      <el-dialog title="Customize Your Drink" :visible.sync="showDialog" @close="closeDialog" width="80%">
         <el-form ref="customDrinkForm">
 
         <el-form-item>
@@ -10,7 +10,8 @@
             <el-input v-model="drinkName"></el-input>
         </el-form-item>
 
-        <el-form-item label="Select Ingredients:">
+        <el-form-item>
+          <div style="text-align: left;">Select Ingredients:</div>
           <el-select v-model="selectedIngredientIds" multiple @change="handleIngredientSelect" placeholder="Select ingredients...">
             <el-option
               v-for="ingredient in availableIngredients"
@@ -24,7 +25,10 @@
         <div v-for="ingredient in selectedIngredients" :key="ingredient.id">
           <el-form-item>
             <div style="text-align: left;">{{ ingredient.name }}</div>
-            <el-input v-model="ingredient.amount" type="number"  min=1></el-input>
+            <div class="input-wrapper">
+              <el-input v-model="ingredient.amount" type="number"  min=1 style="margin-right: 8px;"></el-input>
+              <span class="unit">oz</span>
+            </div>
           </el-form-item>
         </div>
 
@@ -148,4 +152,12 @@ import { reactive } from 'vue';
   .dialog-footer {
     text-align: right;
   }
+  .input-wrapper {
+  display: flex; /* Use flexbox to align items in a row */
+  align-items: center; /* Align items vertically in the center */
+}
+
+.unit {
+  white-space: nowrap; /* Prevent the "oz" text from wrapping */
+}
   </style>

@@ -13,9 +13,9 @@
         <el-card class="card" :body-style="{ padding: '0px' }">
           <div class="content-with-icon">
             <div class="content">
-              <img src="../../../assets/img/Mojito.jpg" class="image">
+              <img :src=drink.image_url class="image">
               <div style="padding: 10px; text-align: center;">
-                <h5>{{drink.name}}</h5>
+                <h5 style="white-space: normal; word-break: keep-all;">{{drink.name}}</h5>
                 <p style="white-space: normal; font-size: 12px;">{{drink.description}}</p>
                 <div v-if="drink.is_available">
                   <div class="bottom clearfix">
