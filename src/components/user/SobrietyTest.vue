@@ -48,7 +48,6 @@
 
         <div v-if="testFinished" style="text-align: center;">
           <p>You finished the test in {{ (Math.round(time * 100) / 100).toFixed(2) }} seconds.</p>
-          <!-- add logic here to check if greater than the pass fail time for each user -->
           <div v-if="time < 45">
             <p style="white-space: normal; word-break: keep-all;">Congratulations, you passed the test. You may proceed with ordering drinks. Enjoy!</p>
           </div>

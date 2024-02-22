@@ -9,7 +9,7 @@
         <li  class="date-container">Last sobriety test at: {{lastSobrietyTestAt.toLocaleString()}}</li >
         <li  class="date-container">Last sobriety test score: {{lastSobrietyTestScore}}</li >
         <li class="date-container">Last sobriety test result: {{ !drunk ? 'PASS' : 'FAIL' }}</li>
-        <li class="date-container">Please wait {{ timeLeft }} minutes to retake the sobriety test to order more drinks  :)</li>
+        <li class="date-container">Please wait {{ timeLeft.toFixed(2) }} minutes to retake the sobriety test to order more drinks  :)</li>
 
 
         <li class="date-container">Allergy:
