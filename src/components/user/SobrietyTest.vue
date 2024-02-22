@@ -11,12 +11,14 @@
         <div v-if="!testStarted && !drunk" style="text-align: center;">
           <p>Please complete the following test to ensure that you are suitable to order more drinks.</p>
           <p style="white-space: normal; word-break: keep-all;">There will be 25 circles that appear on your screen. Draw lines to connect the circles in ascending order from 1 to 25 as quickly as possible.</p>
+          <p style="white-space: normal; word-break: keep-all;">There will be 25 circles that appear on your screen. Draw lines to connect the circles in ascending order from 1 to 25 as quickly as possible.</p>
           <p>Click the "Start Test" button when you are ready.</p>
           <el-button @click="startTest" v-if="!testStarted">Start Test</el-button>
         </div>
 
         <div v-if="!testStarted && drunk" style="text-align: center;">
           <p>You previously failed the test and have been deemed unsuitable for more drinks.</p>
+          <p>Please wait {{ timeLeft.toFixed(2) }} minutes before attempting the test again.</p>
           <p>Please wait {{ timeLeft.toFixed(2) }} minutes before attempting the test again.</p>
           <el-button @click="handleClose">Close</el-button>
         </div>
@@ -53,6 +55,7 @@
             <p>Congratulations, you passed the test. You may proceed with ordering drinks. Enjoy!</p>
           </div>
           <div v-else>
+            <p>Unfortunately, you failed the test. Please wait until you are sober before trying the test again.</p>
             <p>Unfortunately, you failed the test. Please wait until you are sober before trying the test again.</p>
           </div>
           <el-button @click="handleFinish">Finish</el-button>
@@ -92,6 +95,12 @@ export default {
       required: true
     }
   },
+  props:{
+    drinkId: {
+      type: Number,
+      required: true
+    }
+  },
   mounted() {
     this.updateContainerDimensions();
     window.addEventListener('resize', this.updateContainerDimensions);
@@ -121,6 +130,7 @@ export default {
               }
               else if (last_test_score < 45 && !this.hasTimePassed(last_test_time, 15)) {
                 //allow the user to bypass the test if they passed 15 mins ago
+                this.$emit('testFinished', { passed: true, drinkId: this.drinkId });
                 this.$emit('testFinished', { passed: true, drinkId: this.drinkId });
                 this.closeDialog()
                 return;
@@ -292,9 +302,11 @@ export default {
     },
     handleFinish() {
       this.$emit('testFinished', { passed: this.time < 60, drinkId: this.drinkId });
+      this.$emit('testFinished', { passed: this.time < 60, drinkId: this.drinkId });
       this.closeDialog()
     },
     handleClose() {
+      this.$emit('testFinished', { passed: false, drinkId: this.drinkId });
       this.$emit('testFinished', { passed: false, drinkId: this.drinkId });
       this.closeDialog()
     },
