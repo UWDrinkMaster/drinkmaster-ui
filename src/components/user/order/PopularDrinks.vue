@@ -55,17 +55,23 @@ Please confirm the drink cup has been placed in the machine.</span>
     </el-dialog>
 
     <el-dialog
-      title="Your Drink is mixing!"
+      title="Your Drink is Ordered!"
       :visible.sync="drinkOrderPendingStep2"
       width="80%"
       :modalAppendToBody="false"
       center>
-      <span>
-              Mixing... </span>
-      <span slot="footer" class="dialog-footer">
+        <div class="dialog-content">
+      <p>
+           Mixing... </p>
+        <span>
+              You will get a pop-up message when your drink is ready! </span>
+        <span>
+              or you can track your order status in Order History. </span>
+<!--      <span slot="footer" class="dialog-footer">-->
 
-          <el-button  @click="handleMixing">Next</el-button>
-      </span>
+<!--&lt;!&ndash;          <el-button  @click="handleMixing">Next</el-button>&ndash;&gt;-->
+<!--      </span>-->
+        </div>
     </el-dialog>
 
     <el-dialog
@@ -275,6 +281,28 @@ Please confirm the drink cup has been placed in the machine.</span>
   padding: 10px;
   font-size: 32px; /* Adjust the size as needed */
   color: #FA3939;
-  color: #FA3939;
 }
+
+  .dialog-content {
+      padding: 20px;
+      text-align: center;
+      background-color: rgb(255, 250, 170);
+      border-radius: 5px;
+      white-space: normal; /* Allow text to wrap */
+  }
+
+  .el-dialog__header {
+      background-color: #409EFF;
+      color: white;
+      border-radius: 5px 5px 0 0;
+  }
+
+  .el-dialog__footer {
+      text-align: center;
+  }
+
+  .el-button--primary,
+  .el-button--default {
+      margin: 0 10px;
+  }
 </style>
