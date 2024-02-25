@@ -9,14 +9,22 @@
 
   <div class="scroll-container">
     <el-row class="scroll-row">
+      <el-col :span="10" :offset="1">
+        <el-card class="centered-content" :body-style="{ padding: '0px' }">
+          <h4 style="white-space: normal; word-break: keep-all;">Click the button below to create a custom drink</h4>
+          <div class="bottom clearfix">
+            <CustomizeDrink button-text='Create Custom Drink'></CustomizeDrink>
+          </div>
+        </el-card>
+      </el-col>
+
       <el-col :span="10" v-for="drink in drinks" :key="drink.id" :offset="1">
         <el-card class="card" :body-style="{ padding: '0px' }">
           <div class="content-with-icon">
             <div class="content">
-          <img src="../../../assets/img/drink_sample_1.png" class="image">
+          <img src="../../../assets/img/custom.jpeg" class="image">
           <div style="padding: 10px; text-align: center;">
-            <h5>{{drink.name}}</h5>
-            <p class="description">{{drink.description}}</p>
+            <h5 style="white-space: normal; word-break: keep-all;">{{drink.name}}</h5>
             <div v-if="drink.is_available">
               <div class="bottom clearfix">
                 <!-- <CustomizeDrink button-text='Customize' :ingredient-ids=drink.ingredient_ids :base-drink-name=drink.name></CustomizeDrink> -->
@@ -24,7 +32,7 @@
               </div>
             </div>
             <div v-else>
-              <p>This drink is currently unavailable.</p>
+              <h6 style="white-space: normal; font-size: 12px;">This drink is currently unavailable.</h6>
             </div>
             <el-tooltip v-if="drink.is_allergic" placement="top">
                   <template #content>
@@ -34,15 +42,6 @@
                 </el-tooltip>
           </div>
           </div>
-          </div>
-        </el-card>
-      </el-col>
-
-      <el-col :span="10" :offset="1">
-        <el-card class="centered-content" :body-style="{ padding: '0px' }">
-          <h4 style="white-space: normal;">Click the button below to create a custom drink</h4>
-          <div class="bottom clearfix">
-            <CustomizeDrink button-text='Create Custom Drink'></CustomizeDrink>
           </div>
         </el-card>
       </el-col>
@@ -105,6 +104,7 @@ Please confirm the drink cup has been placed in the machine.</span>
             machineId: 1,
             transId: -1,
             selectedDrinkId: -1,
+            selectedDrinkId: -1,
             drinkOrderPendingStep1: false,
             drinkOrderPendingStep2: false,
             drinkOrderPendingStep3: false,
@@ -166,6 +166,8 @@ Please confirm the drink cup has been placed in the machine.</span>
             this.$orderApi.createOrder(this.selectedDrinkId, userId).then(res => {
                 if (res.status === 201) {
                     this.transId = res.data.id;
+                    this.drinkOrderPendingStep1 = false;
+                    this.drinkOrderPendingStep2 = true;
                     this.drinkOrderPendingStep1 = false;
                     this.drinkOrderPendingStep2 = true;
                 }
@@ -323,6 +325,7 @@ Please confirm the drink cup has been placed in the machine.</span>
 .icon-right {
   padding: 10px;
   font-size: 32px; /* Adjust the size as needed */
+  color: #FA3939;
   color: #FA3939;
 }
 </style>

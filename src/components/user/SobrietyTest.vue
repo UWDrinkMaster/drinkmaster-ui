@@ -9,15 +9,15 @@
       :modalAppendToBody="false"
       center fullscreen>
         <div v-if="!testStarted && !drunk" style="text-align: center;">
-          <p>Please complete the following test to ensure that you are suitable to order more drinks.</p>
+          <p style="white-space: normal; word-break: keep-all;">Please complete the following test to ensure that you are suitable to order more drinks.</p>
           <p style="white-space: normal; word-break: keep-all;">There will be 25 circles that appear on your screen. Draw lines to connect the circles in ascending order from 1 to 25 as quickly as possible.</p>
           <p>Click the "Start Test" button when you are ready.</p>
           <el-button @click="startTest" v-if="!testStarted">Start Test</el-button>
         </div>
 
         <div v-if="!testStarted && drunk" style="text-align: center;">
-          <p>You previously failed the test and have been deemed unsuitable for more drinks.</p>
-          <p>Please wait {{ timeLeft.toFixed(2) }} minutes before attempting the test again.</p>
+          <p style="white-space: normal; word-break: keep-all;" >You previously failed the test and have been deemed unsuitable for more drinks.</p>
+          <p style="white-space: normal; word-break: keep-all;">Please wait {{ timeLeft.toFixed(2) }} minutes before attempting the test again.</p>
           <el-button @click="handleClose">Close</el-button>
         </div>
 
@@ -48,12 +48,11 @@
 
         <div v-if="testFinished" style="text-align: center;">
           <p>You finished the test in {{ (Math.round(time * 100) / 100).toFixed(2) }} seconds.</p>
-          <!-- add logic here to check if greater than the pass fail time for each user -->
           <div v-if="time < 45">
-            <p>Congratulations, you passed the test. You may proceed with ordering drinks. Enjoy!</p>
+            <p style="white-space: normal; word-break: keep-all;">Congratulations, you passed the test. You may proceed with ordering drinks. Enjoy!</p>
           </div>
           <div v-else>
-            <p>Unfortunately, you failed the test. Please wait until you are sober before trying the test again.</p>
+            <p style="white-space: normal; word-break: keep-all;">Unfortunately, you failed the test. Please wait until you are sober before trying the test again.</p>
           </div>
           <el-button @click="handleFinish">Finish</el-button>
         </div>
@@ -92,6 +91,12 @@ export default {
       required: true
     }
   },
+  props:{
+    drinkId: {
+      type: Number,
+      required: true
+    }
+  },
   mounted() {
     this.updateContainerDimensions();
     window.addEventListener('resize', this.updateContainerDimensions);
@@ -108,18 +113,18 @@ export default {
             let last_test_time = res.data.last_sobriety_test_at
             let last_test_score = res.data.last_sobriety_test_score
             if(last_test_score != null){
-              if (last_test_score > 45 && last_test_score < 78 && !this.hasTimePassed(last_test_time, 15)) {
+              if (last_test_score > 40 && last_test_score < 70 && !this.hasTimePassed(last_test_time, 15)) {
                 this.drunk = true;
                 this.timeLeft = this.getTimeDiff(last_test_time, 15);
                 this.dialogVisible = true;
                 return;
-              } else if (last_test_score > 78 && !this.hasTimePassed(last_test_time, 30)) {
+              } else if (last_test_score > 70 && !this.hasTimePassed(last_test_time, 30)) {
                 this.drunk = true;
                 this.timeLeft = this.getTimeDiff(last_test_time, 30);
                 this.dialogVisible = true;
                 return;
               }
-              else if (last_test_score < 45 && !this.hasTimePassed(last_test_time, 15)) {
+              else if (last_test_score < 40 && !this.hasTimePassed(last_test_time, 15)) {
                 //allow the user to bypass the test if they passed 15 mins ago
                 this.$emit('testFinished', { passed: true, drinkId: this.drinkId });
                 this.closeDialog()
@@ -291,7 +296,7 @@ export default {
       this.testFinished = true;
     },
     handleFinish() {
-      this.$emit('testFinished', { passed: this.time < 60, drinkId: this.drinkId });
+      this.$emit('testFinished', { passed: this.time < 40, drinkId: this.drinkId });
       this.closeDialog()
     },
     handleClose() {
