@@ -4,7 +4,7 @@ import {Message} from "element-ui";
 
 export const WebSocketJS = {
   connect(vm) {
-    this.socket = new SockJS("http://localhost:8498/websocket");
+    this.socket = new SockJS(process.env.VUE_APP_URL + process.env.VUE_APP_PORT + "/websocket");
     this.stompClient = Stomp.over(this.socket);
     this.stompClient.connect({}, frame => {
       //console.log(frame);
