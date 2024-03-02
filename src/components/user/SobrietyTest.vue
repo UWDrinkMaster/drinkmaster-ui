@@ -113,18 +113,19 @@ export default {
             let last_test_time = res.data.last_sobriety_test_at
             let last_test_score = res.data.last_sobriety_test_score
             if(last_test_score != null){
-              if (last_test_score > 40 && last_test_score < 70 && !this.hasTimePassed(last_test_time, 15)) {
-                this.drunk = true;
-                this.timeLeft = this.getTimeDiff(last_test_time, 15);
-                this.dialogVisible = true;
-                return;
-              } else if (last_test_score > 70 && !this.hasTimePassed(last_test_time, 30)) {
+              //if (last_test_score > 40 && last_test_score < 70 && !this.hasTimePassed(last_test_time, 15)) {
+              //  this.drunk = true;
+              //  this.timeLeft = this.getTimeDiff(last_test_time, 15);
+              //  this.dialogVisible = true;
+              //  return;
+              //} else 
+              if (last_test_score >= 70 && !this.hasTimePassed(last_test_time, 30)) {
                 this.drunk = true;
                 this.timeLeft = this.getTimeDiff(last_test_time, 30);
                 this.dialogVisible = true;
                 return;
               }
-              else if (last_test_score < 40 && !this.hasTimePassed(last_test_time, 15)) {
+              else if (last_test_score < 70 && !this.hasTimePassed(last_test_time, 15)) {
                 //allow the user to bypass the test if they passed 15 mins ago
                 this.$emit('testFinished', { passed: true, drinkId: this.drinkId });
                 this.closeDialog()
@@ -328,11 +329,12 @@ export default {
       const now = new Date();
       const givenTime = new Date(timestamp);
       const difference = now - givenTime;
-
+      console.log("difference is: " + difference);
       //minutes in milliseconds
       const minutes = minutesPassed * 60 * 1000;
 
-      return (minutes - difference)/60/1000;
+      console.log(minutes)
+      return (minutes - difference)/60/1000 - 300;
     }
   },
 };
