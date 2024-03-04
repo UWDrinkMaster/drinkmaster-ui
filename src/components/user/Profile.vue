@@ -8,7 +8,7 @@
         <li class="date-container" >Date of Birth: {{birthday}}</li >
         <li  class="date-container">Last sobriety test at: {{lastSobrietyTestAt.toLocaleString()}}</li >
         <li  class="date-container">Last sobriety test score: {{lastSobrietyTestScore}}</li >
-        <li class="date-container">Last sobriety test result: {{ !drunk ? 'PASS' : 'FAIL' }}</li>
+        <li class="date-container">Last sobriety test result: {{ lastSobrietyTestScore < 70 ? 'PASS' : 'FAIL' }}</li>
         <li class="date-container">Please wait {{ timeLeft.toFixed(2) }} minutes to retake the sobriety test to order more drinks  :)</li>
 
 
@@ -104,16 +104,16 @@
             });
 
             if(this.lastSobrietyTestScore != null){
-              if (this.lastSobrietyTestScore > 45 && this.lastSobrietyTestScore < 78 && !this.hasTimePassed(this.lastSobrietyTestAt , 15)) {
-                this.drunk = true;
-                this.timeLeft = this.getTimeDiff(this.lastSobrietyTestAt , 15);
+              // if (this.lastSobrietyTestScore > 45 && this.lastSobrietyTestScore < 78 && !this.hasTimePassed(this.lastSobrietyTestAt , 15)) {
+              //   this.drunk = true;
+              //   this.timeLeft = this.getTimeDiff(this.lastSobrietyTestAt , 15);
 
-              } else if (this.lastSobrietyTestScore > 78 && !this.hasTimePassed(this.lastSobrietyTestAt , 30)) {
+              // } else 
+              if (this.lastSobrietyTestScore >= 70 && !this.hasTimePassed(this.lastSobrietyTestAt , 30)) {
                 this.drunk = true;
                 this.timeLeft = this.getTimeDiff(this.lastSobrietyTestAt , 30);
-
               }
-              else if (this.lastSobrietyTestScore < 45 && !this.hasTimePassed(this.lastSobrietyTestAt , 15)) {
+              else if (this.lastSobrietyTestScore < 70 && !this.hasTimePassed(this.lastSobrietyTestAt , 15)) {
                 //allow the user to bypass the test if they passed 15 mins ago
                 this.drunk = false;
 
@@ -142,26 +142,26 @@
           return this.storedAllergyOptions;
         },
 
-        setGameResult(){
-          if(last_test_score != null){
-            if (last_test_score > 45 && last_test_score < 78 && !this.hasTimePassed(last_test_time, 15)) {
-              this.drunk = true;
-              this.timeLeft = this.getTimeDiff(last_test_time, 15);
-              this.dialogVisible = true;
-              return;
-            } else if (last_test_score > 78 && !this.hasTimePassed(last_test_time, 30)) {
-              this.drunk = true;
-              this.timeLeft = this.getTimeDiff(last_test_time, 30);
-              this.dialogVisible = true;
-              return;
-            }
-            else if (last_test_score < 45 && !this.hasTimePassed(last_test_time, 15)) {
-              //allow the user to bypass the test if they passed 15 mins ago
-              this.$emit('testFinished', { passed: true, drinkId: this.drinkId });
-              this.closeDialog()
-              return;
-            }
-          }},
+        // setGameResult(){
+        //   if(last_test_score != null){
+        //     if (last_test_score > 45 && last_test_score < 78 && !this.hasTimePassed(last_test_time, 15)) {
+        //       this.drunk = true;
+        //       this.timeLeft = this.getTimeDiff(last_test_time, 15);
+        //       this.dialogVisible = true;
+        //       return;
+        //     } else if (last_test_score > 78 && !this.hasTimePassed(last_test_time, 30)) {
+        //       this.drunk = true;
+        //       this.timeLeft = this.getTimeDiff(last_test_time, 30);
+        //       this.dialogVisible = true;
+        //       return;
+        //     }
+        //     else if (last_test_score < 45 && !this.hasTimePassed(last_test_time, 15)) {
+        //       //allow the user to bypass the test if they passed 15 mins ago
+        //       this.$emit('testFinished', { passed: true, drinkId: this.drinkId });
+        //       this.closeDialog()
+        //       return;
+        //     }
+        //   }},
         hasTimePassed(timestamp, minutesPassed) {
           // Current time
           const now = new Date();
@@ -181,7 +181,7 @@
           //minutes in milliseconds
           const minutes = minutesPassed * 60 * 1000;
 
-          return (minutes - difference)/60/1000;
+          return (minutes - difference)/60/1000 - 300;
         }
 
 
