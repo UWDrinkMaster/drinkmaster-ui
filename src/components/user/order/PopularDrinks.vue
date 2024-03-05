@@ -26,6 +26,12 @@
                 <div v-else>
                   <h6 style="white-space: normal; font-size: 12px;">This drink is currently out of stock.</h6>
                 </div>
+                <el-tooltip v-if="drink.id < 5 && !drink.is_allergic" placement="top">
+                  <template #content>
+                    Recommended for you!
+                  </template>
+                  <i class="el-icon-star-on icon-left"></i>
+                </el-tooltip>
                 <el-tooltip v-if="drink.is_allergic" placement="top">
                   <template #content>
                     {{ getAllergenText(drink.allergen_ids) }}
@@ -282,7 +288,11 @@ Please confirm the drink cup has been placed in the machine.</span>
   font-size: 32px; /* Adjust the size as needed */
   color: #FA3939;
 }
-
+.icon-left {
+  padding: 10px;
+  font-size: 32px; /* Adjust the size as needed */
+  color: gold;
+}
   .dialog-content {
       padding: 20px;
       text-align: center;
@@ -305,4 +315,14 @@ Please confirm the drink cup has been placed in the machine.</span>
   .el-button--default {
       margin: 0 10px;
   }
+
+  .icon-star {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 0;
+  font-size: 24px; /* Adjust size as needed */
+  color: gold; /* Or any color you prefer */
+  padding: 10px; /* Adjust for positioning inside the card */
+}
 </style>
