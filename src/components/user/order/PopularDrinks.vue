@@ -24,7 +24,7 @@
                   </div>
                 </div>
                 <div v-else>
-                  <h6 style="white-space: normal; font-size: 12px;">This drink is currently unavailable.</h6>
+                  <h6 style="white-space: normal; font-size: 12px;">This drink is currently out of stock.</h6>
                 </div>
                 <el-tooltip v-if="drink.is_allergic" placement="top">
                   <template #content>
