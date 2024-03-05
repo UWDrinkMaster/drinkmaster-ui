@@ -48,7 +48,7 @@
 
         <div v-if="testFinished" style="text-align: center;">
           <p>You finished the test in {{ (Math.round(time * 100) / 100).toFixed(2) }} seconds.</p>
-          <div v-if="time < 45">
+          <div v-if="time < 70">
             <p style="white-space: normal; word-break: keep-all;">Congratulations, you passed the test. You may proceed with ordering drinks. Enjoy!</p>
           </div>
           <div v-else>
@@ -328,13 +328,15 @@ export default {
     getTimeDiff(timestamp, minutesPassed){
       const now = new Date();
       const givenTime = new Date(timestamp);
+      console.log(now);
+      console.log(givenTime);
       const difference = now - givenTime;
-      console.log("difference is: " + difference);
       //minutes in milliseconds
       const minutes = minutesPassed * 60 * 1000;
-
-      console.log(minutes)
-      return (minutes - difference)/60/1000 - 300;
+      const diff_mins = difference/60/1000;
+      console.log("difference is: " + diff_mins);
+      console.log(minutes, minutesPassed);
+      return (minutes - difference)/60/1000;
     }
   },
 };
