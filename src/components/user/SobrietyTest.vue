@@ -333,6 +333,7 @@ export default {
       const difference = now - givenTime + (5 * 60 * 60 * 1000); //OFFSET FOR SCUFFED TIME
       //minutes in milliseconds
       const minutes = minutesPassed * 60 * 1000;
+
       return (minutes - difference)/60/1000;
     }
   },
