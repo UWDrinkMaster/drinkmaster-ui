@@ -318,7 +318,7 @@ export default {
       // Current time
       const now = new Date();
       const givenTime = new Date(timestamp);
-      const difference = now - givenTime;
+      const difference = now - givenTime + (5 * 60 * 60 * 1000); //OFFSET FOR SCUFFED TIME
 
       //minutes in milliseconds
       const minutes = minutesPassed * 60 * 1000;
@@ -330,12 +330,10 @@ export default {
       const givenTime = new Date(timestamp);
       console.log(now);
       console.log(givenTime);
-      const difference = now - givenTime;
+      const difference = now - givenTime + (5 * 60 * 60 * 1000); //OFFSET FOR SCUFFED TIME
       //minutes in milliseconds
       const minutes = minutesPassed * 60 * 1000;
-      const diff_mins = difference/60/1000;
-      console.log("difference is: " + diff_mins);
-      console.log(minutes, minutesPassed);
+
       return (minutes - difference)/60/1000;
     }
   },
