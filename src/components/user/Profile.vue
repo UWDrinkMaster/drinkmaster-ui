@@ -6,6 +6,7 @@
       <ul class="user-info">
         <li class="date-container" >Email: {{this.$store.getters.getUser.username}}</li >
         <li class="date-container" >Date of Birth: {{birthday}}</li >
+        <li class="date-container" >Preferred allowable alcohol per day: {{allowableAlcohol() }} drinks </li >
         <li  class="date-container">Last sobriety test at: {{lastSobrietyTestAt.toLocaleString()}}</li >
         <li  class="date-container">Last sobriety test score: {{lastSobrietyTestScore}}</li >
         <li class="date-container">Last sobriety test result: {{ lastSobrietyTestScore < 70 ? 'PASS' : 'FAIL' }}</li>
@@ -85,6 +86,13 @@
               }
             })
           }
+        },
+        allowableAlcohol() {
+          const birthYear = new Date(this.birthday).getFullYear();
+          const currentYear = new Date().getFullYear();
+          const maxBAC = 0.08 - ((currentYear - birthYear) * 0.001);
+          const maxAlcoholOz = maxBAC * 100;
+          return maxAlcoholOz.toFixed(2); // Limit to two decimal places
         },
         async getUserProfile(){
           if(this.$store.getters.getUser){
