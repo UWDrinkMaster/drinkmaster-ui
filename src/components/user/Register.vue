@@ -158,8 +158,8 @@
           if (!Number.isInteger(value)) {
             callback(new Error('Please input digits'));
           } else {
-            if (value < 18) {
-              callback(new Error('Age must be greater than 18'));
+            if (value < 19) {
+              callback(new Error('Age must be greater than 19'));
             } else {
               callback();
             }
