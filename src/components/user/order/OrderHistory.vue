@@ -59,7 +59,7 @@
             return 'warning-row';
           } else if (row.status == "COMPLETED") {
             return 'success-row';
-          } else if (row.status == "CANCELED") {
+          } else if (row.status == "CANCELLED") {
             return 'danger-row';
           } else if (row.status == "CREATED") {
             return 'info-row';

@@ -9,8 +9,8 @@
       :modalAppendToBody="false"
       center fullscreen>
         <div v-if="!testStarted && !drunk" style="text-align: center;">
-          <p style="white-space: normal; word-break: keep-all;">Please complete the following test to ensure that you are suitable to order more drinks.</p>
-          <p style="white-space: normal; word-break: keep-all;">There will be 25 circles that appear on your screen. Draw lines to connect the circles in ascending order from 1 to 25 as quickly as possible.</p>
+          <p style="white-space: normal; word-break: keep-all;">Please complete the following test to ensure that you are suitable to order drinks.</p>
+          <p style="white-space: normal; word-break: keep-all;">There will be 25 circles that appear on your screen. Tap the circles in ascending order from 1 to 25 as quickly as possible.</p>
           <p>Click the "Start Test" button when you are ready.</p>
           <el-button @click="startTest" v-if="!testStarted">Start Test</el-button>
         </div>
@@ -21,7 +21,13 @@
           <el-button @click="handleClose">Close</el-button>
         </div>
 
-        <div v-if="testStarted && !testFinished">
+        <div v-if="!showTest && testStarted">
+          <div v-if="countdownStarted" class="countdown">
+            {{ countdown }}
+          </div>
+        </div>
+
+        <div v-if="showTest && !testFinished">
           <div class="timer">
             {{ time.toFixed(2) }}
           </div>
@@ -29,10 +35,6 @@
           @mousedown="handleMouseDown"
           @mouseup="handleMouseUp"
           @mousemove="handleMouseMove"></canvas>
-
-          <div v-if="countdownStarted" class="countdown">
-            {{ countdown }}
-          </div>
 
           <div class="game-container">
             <div v-for="circle in shuffledCircles"
@@ -67,6 +69,7 @@ export default {
     return {
       dialogVisible: false,
       testStarted: false,
+      showTest: false,
       testFinished: false,
       circles: Array.from({ length: 25 }, (_, index) => ({ id: index + 1, number: index + 1, top: 0, left: 0, completed: false })),
       drawing: false,
@@ -150,6 +153,7 @@ export default {
           clearInterval(countdownInterval);
           this.countdownStarted = false;
           this.drawingEnabled = true;
+          this.showTest = true;
           this.startTimer(); // start the timer once the countdown is done
         }
       }, 1000);
@@ -173,6 +177,7 @@ export default {
       this.dialogVisible = false;
       this.testStarted = false;
       this.testFinished = false;
+      this.showTest = false;
       this.time = 0;
       this.countdownStarted = false;
       this.lineSegments = [];
