@@ -130,6 +130,7 @@ export default {
               }
               else if (last_test_score < 70 && !this.hasTimePassed(last_test_time, 15)) {
                 //allow the user to bypass the test if they passed 15 mins ago
+                console.log("passed recently");
                 this.$emit('testFinished', { passed: true, drinkId: this.drinkId });
                 this.closeDialog()
                 return;
@@ -327,7 +328,8 @@ export default {
 
       //minutes in milliseconds
       const minutes = minutesPassed * 60 * 1000;
-
+      console.log("difference is " + difference)
+      console.log("minutes are " + minutes)
       return difference > minutes;
     },
     getTimeDiff(timestamp, minutesPassed){
