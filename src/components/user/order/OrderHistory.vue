@@ -43,6 +43,7 @@
 
 <script>
   import axios from 'axios'
+  import moment from 'moment';
 
   export default {
     name: 'Profile', data() {
@@ -101,6 +102,12 @@
           if (item.status === "CREATED") {
             item.status = "PENDING";
           }
+          let createdAt = moment(item.createdAt);
+          let modifiedAt = moment(item.modifiedAt);
+          let tntcreatedAt = createdAt.subtract(4, 'hours');
+          let tntmodifiedAt = modifiedAt.subtract(4, 'hours');
+          item.createdAt = tntcreatedAt.format('YYYY-MM-DDTHH:mm:ss');
+          item.modifiedAt = tntmodifiedAt.format('YYYY-MM-DDTHH:mm:ss');
           return item;
         });
         if(this.historyOrdersRaw.length>0){
