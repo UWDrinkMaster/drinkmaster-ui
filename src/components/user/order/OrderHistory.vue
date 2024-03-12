@@ -44,6 +44,7 @@
 <script>
   import axios from 'axios'
   import moment from 'moment';
+  import 'moment-timezone';
 
   export default {
     name: 'Profile', data() {
@@ -83,14 +84,19 @@
           this.$message.error(err.response.data.message)
         })
 
-      }, async getOrderHistory() {
+      },
+      convertToTorontoTimezone(datetimeString) {
+        // Parse the datetime string using moment-timezone and convert to Toronto timezone
+        return moment(datetimeString).tz('America/Toronto').format('YYYY-MM-DDTHH:mm:ss');
+      },
+      async getOrderHistory() {
         let userId = -1;
         if (this.$store.getters.getUser) {
           userId = this.$store.getters.getUser.id;
         }
         await this.$orderApi.getUserOrders(userId).then(res => {
           if (res.status === 200) {
-            //console.log(res.data)
+            console.log(res.data)
             this.historyOrdersRaw = res.data;
           }
         }).catch(err => {
@@ -102,12 +108,11 @@
           if (item.status === "CREATED") {
             item.status = "PENDING";
           }
-          let createdAt = moment(item.createdAt);
-          let modifiedAt = moment(item.modifiedAt);
-          let tntcreatedAt = createdAt.subtract(4, 'hours');
-          let tntmodifiedAt = modifiedAt.subtract(4, 'hours');
-          item.createdAt = tntcreatedAt.format('YYYY-MM-DDTHH:mm:ss');
-          item.modifiedAt = tntmodifiedAt.format('YYYY-MM-DDTHH:mm:ss');
+          item.created_at =  this.convertToTorontoTimezone(item.created_at);
+          // let createdAt = moment(item.created_at);
+          // let tntcreatedAt = createdAt.subtract(4, 'hours');
+          // item.created_at = tntcreatedAt.format('YYYY-MM-DDTHH:mm:ss');
+          // console.log(item.created_at)
           return item;
         });
         if(this.historyOrdersRaw.length>0){
