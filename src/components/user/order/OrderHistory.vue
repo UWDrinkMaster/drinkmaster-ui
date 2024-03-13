@@ -108,11 +108,12 @@
           if (item.status === "CREATED") {
             item.status = "PENDING";
           }
-          item.created_at =  this.convertToTorontoTimezone(item.created_at);
+          item.created_at = moment(item.created_at).subtract(4, 'hours').format('YYYY-MM-DDTHH:mm:ss');
           // let createdAt = moment(item.created_at);
           // let tntcreatedAt = createdAt.subtract(4, 'hours');
           // item.created_at = tntcreatedAt.format('YYYY-MM-DDTHH:mm:ss');
           // console.log(item.created_at)
+          console.log(item.created_at)
           return item;
         });
         if(this.historyOrdersRaw.length>0){
