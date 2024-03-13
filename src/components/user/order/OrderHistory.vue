@@ -87,7 +87,7 @@
       },
       convertToTorontoTimezone(datetimeString) {
         // Parse the datetime string using moment-timezone and convert to Toronto timezone
-        return moment(datetimeString).tz('America/Toronto').format('YYYY-MM-DDTHH:mm:ss');
+        return moment(datetimeString).tz('America/Toronto').format('YYYY-MM-DD HH:mm:ss');
       },
       async getOrderHistory() {
         let userId = -1;

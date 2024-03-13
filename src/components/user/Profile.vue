@@ -36,6 +36,8 @@
 </template>
 
 <script>
+    import moment from "moment";
+
     export default {
       name: "Profile",
       data(){
@@ -98,7 +100,7 @@
           if(this.$store.getters.getUser){
             await this.$userApi.getUser(this.$store.getters.getUser.id).then(res => {
               if (res.status === 200) {
-                this.lastSobrietyTestAt = res.data.last_sobriety_test_at;
+                this.lastSobrietyTestAt =  moment(res.data.last_sobriety_test_at).subtract(4, 'hours').format('YYYY-MM-DD HH:mm:ss');;
                 this.lastSobrietyTestScore = res.data.last_sobriety_test_score;
                 if(this.lastSobrietyTestScore != null){
                   this.lastSobrietyTestScore =this.lastSobrietyTestScore.toFixed(2)
@@ -116,7 +118,7 @@
               //   this.drunk = true;
               //   this.timeLeft = this.getTimeDiff(this.lastSobrietyTestAt , 15);
 
-              // } else 
+              // } else
               if (this.lastSobrietyTestScore >= 70 && !this.hasTimePassed(this.lastSobrietyTestAt , 30)) {
                 this.drunk = true;
                 this.timeLeft = this.getTimeDiff(this.lastSobrietyTestAt , 30);
